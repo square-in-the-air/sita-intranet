@@ -38,6 +38,7 @@ export default async function HomePage() {
   return (
     <div className="home">
       <section className="news-section">
+        <h1>Test</h1>
         <div className="news-section__header">
           <h2>Latest news</h2>
           <Link href="/news" className="button button--outline">
