@@ -1,39 +1,13 @@
 import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import React from 'react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import config from '@/payload.config'
-import '../../styles.css'
+import { Article, formatArticleDate } from '../../_components/Article'
 
-const departmentLabels: Record<string, string> = {
-  all: 'All departments',
-  activation: 'Activation',
-  creative: 'Creative',
-  design: 'Design',
-  pr: 'PR',
-  social: 'Social',
-  video: 'Video',
-}
-
-const formatDate = (value: string) =>
-  new Date(value).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
-
-export default async function NewsArticlePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
-
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-
+const getArticle = async (slug: string) => {
+  const payload = await getPayload({ config: await config })
   const result = await payload.find({
     collection: 'news',
     where: {
@@ -43,38 +17,31 @@ export default async function NewsArticlePage({
     limit: 1,
     depth: 1,
   })
+  return result.docs[0] ?? null
+}
 
-  const article = result.docs[0]
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const article = await getArticle((await params).slug)
+  return { title: article ? `${article.title} | SITA Intranet` : 'News | SITA Intranet' }
+}
 
-  if (!article) {
-    notFound()
-  }
+export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const article = await getArticle((await params).slug)
+  if (!article) notFound()
 
-  const image = typeof article.heroImage === 'object' ? article.heroImage : null
+  const image = article.heroImage && typeof article.heroImage === 'object' ? article.heroImage : null
+  const author = article.author && typeof article.author === 'object' ? article.author.name : null
 
   return (
-    <div className="home">
-      <article className="news-article">
-        <Link href="/news" className="news-article__back">
-          ← Back to news
-        </Link>
-
-        <h1>{article.title}</h1>
-
-        <p className="news-article__meta">
-          {article.department && (
-            <span className="news-article__tag">{departmentLabels[article.department]}</span>
-          )}
-          <span className="news-article__date">{formatDate(article.publishedDate)}</span>
-        </p>
-
-        {image?.url && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={image.url} alt={image.alt || ''} className="news-article__image" />
-        )}
-
-        {article.content && <RichText data={article.content} />}
-      </article>
-    </div>
+    <Article
+      title={article.title}
+      author={author}
+      date={formatArticleDate(article.publishedDate)}
+      image={image}
+      lead={article.excerpt}
+      backHref="/news"
+    >
+      {article.content && <RichText data={article.content} />}
+    </Article>
   )
 }

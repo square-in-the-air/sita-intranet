@@ -1,0 +1,42 @@
+@use '../abstracts/variables' as *;
+
+.whats-on {
+  margin: 0;
+  padding: 4px 27px 4px 17px;
+  background: $color-ink;
+  color: $color-white;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 44px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__date {
+    flex: none;
+    min-width: 58px;
+    white-space: nowrap;
+    font-size: calc(13px * var(--fs-scale));
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    min-width: 0;
+    overflow: hidden;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(15px * var(--fs-scale));
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

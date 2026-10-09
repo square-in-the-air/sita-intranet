@@ -1,0 +1,62 @@
+@use '../abstracts/variables' as *;
+
+// Scrolling orange banner on the homepage
+
+.ticker {
+  overflow: hidden;
+  background: $color-orange;
+  color: $color-ink;
+
+  &__track {
+    display: flex;
+    width: max-content;
+    animation: ticker-scroll var(--ticker-duration, 30s) linear infinite;
+
+    &:hover {
+      animation-play-state: paused;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    flex: none;
+    padding: 0 0.3em;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(18px * var(--fs-scale));
+    line-height: 40px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    @include md {
+      font-size: calc(20px * var(--fs-scale));
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+    }
+  }
+}
+
+@keyframes ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}

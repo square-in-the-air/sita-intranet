@@ -1,0 +1,223 @@
+@use '../abstracts/variables' as *;
+
+// Single article template (News, Inspo board, Kudos board)
+
+.article {
+  padding-bottom: 64px;
+  background: $color-cream;
+
+  @include md {
+    padding-bottom: 88px;
+  }
+
+  &__header {
+    // Back link comes last in the markup but sits above the heading
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 36px 0 32px;
+
+    @include md {
+      padding: 33px 0 40px;
+    }
+  }
+
+  &__heading {
+    min-width: 0;
+  }
+
+  &__back {
+    flex: none;
+
+    // Pushed to the right on wider screens
+    @include md {
+      align-self: flex-end;
+    }
+  }
+
+  &__author {
+    margin: 0 0 10px;
+    color: rgba($color-ink, 0.55);
+    font-size: calc(11px * var(--fs-scale));
+    line-height: 1.4;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 0 14px;
+    text-wrap: balance;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(32px * var(--fs-scale));
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+
+    @include md {
+      font-size: calc(46px * var(--fs-scale));
+    }
+  }
+
+  &__accent {
+    color: $color-coral;
+  }
+
+  &__date {
+    margin: 0;
+    font-size: calc(12px * var(--fs-scale));
+    line-height: 1.4;
+  }
+
+  // Full-bleed hero with the angled top edge from the design
+  &__image {
+    aspect-ratio: 16 / 9;
+    background: $color-placeholder;
+    clip-path: polygon(0 2.5%, 31% 15%, 31% 0, 70% 19%, 82% 1%, 100% 9%, 100% 100%, 0 100%);
+
+    @include md {
+      aspect-ratio: 1080 / 560;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    padding-top: 40px;
+
+    @include md {
+      padding-top: 64px;
+    }
+
+    // No hero image: the content follows the header directly, so skip the gap
+    .article__header + & {
+      padding-top: 0;
+    }
+
+    > * {
+      max-width: 760px;
+    }
+  }
+
+  &__lead {
+    margin: 0 0 40px;
+    font-weight: 700;
+    font-size: calc(19px * var(--fs-scale));
+    line-height: 1.3;
+
+    @include md {
+      margin-bottom: 64px;
+      font-size: calc(23px * var(--fs-scale));
+    }
+  }
+
+  // Rich text from Payload (or the placeholder body)
+  &__body {
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+
+    h2,
+    h3,
+    h4 {
+      margin: 48px 0 28px;
+      font-family: $font-body;
+      font-weight: 400;
+      line-height: 1.35;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 5px;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    h2 {
+      font-size: calc(22px * var(--fs-scale));
+
+      @include md {
+        font-size: calc(24px * var(--fs-scale));
+      }
+    }
+
+    h3 {
+      font-size: calc(19px * var(--fs-scale));
+    }
+
+    h4 {
+      font-size: calc(17px * var(--fs-scale));
+    }
+
+    section + section h2 {
+      margin-top: 56px;
+    }
+
+    p,
+    ul,
+    ol {
+      margin: 0 0 18px;
+    }
+
+    a {
+      text-underline-offset: 3px;
+
+      &:hover {
+        color: $color-coral;
+      }
+    }
+
+    img {
+      margin: 32px 0;
+    }
+
+    blockquote {
+      margin: 32px 0;
+      padding-left: 20px;
+      border-left: 4px solid $color-yellow;
+      font-weight: 700;
+    }
+  }
+
+  // Yellow "Any questions?" call-out at the end
+  &__questions {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 40px;
+    padding: 20px 20px 22px;
+    min-width: min(100%, 320px);
+    background: $color-yellow;
+    color: $color-ink;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    @include md {
+      margin-top: 56px;
+    }
+
+    &:hover {
+      background: $color-ink;
+      color: $color-yellow;
+    }
+  }
+
+  &__questions-title {
+    font-family: $font-display;
+    font-size: calc(19px * var(--fs-scale));
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__questions-text {
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: 1.4;
+  }
+}

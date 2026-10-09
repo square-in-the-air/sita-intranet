@@ -1,0 +1,124 @@
+@use '../abstracts/variables' as *;
+
+:root {
+  --font-mono: 'Roboto Mono', monospace;
+
+  // Multiplier applied to every font-size and line-height
+  --fs-scale: 1;
+
+  // Body copy size, stepped up at md, lg
+  --body-size: 15px;
+  --body-lh: 22px;
+
+  @include md {
+    --body-size: 15.5px;
+    --body-lh: 22.5px;
+  }
+
+  @include lg {
+    --body-size: 18px;
+    --body-lh: 26px;
+  }
+
+  @include xl {
+    --body-size: 15.5px;
+    --body-lh: 22.5px;
+    --fs-scale: 1.2;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 18px;
+  line-height: 32px;
+
+  background: $color-white;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  font-family: $font-body;
+  font-size: calc(18px * var(--fs-scale));
+  line-height: calc(32px * var(--fs-scale));
+
+  margin: 0;
+  color: $color-ink;
+
+  @include md {
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(calc(var(--body-lh) + 2px) * var(--fs-scale));
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-display;
+  font-weight: 400;
+}
+
+h1 {
+  margin: 40px 0;
+  font-size: calc(64px * var(--fs-scale));
+  line-height: calc(70px * var(--fs-scale));
+
+  @include md {
+    margin: 24px 0;
+    font-size: calc(42px * var(--fs-scale));
+    line-height: calc(42px * var(--fs-scale));
+  }
+
+  @include sm {
+    font-size: calc(38px * var(--fs-scale));
+    line-height: calc(38px * var(--fs-scale));
+  }
+
+  @include xs {
+    font-size: calc(32px * var(--fs-scale));
+    line-height: calc(32px * var(--fs-scale));
+  }
+}
+
+p {
+  margin: 24px 0;
+
+  @include md {
+    margin: calc(var(--base) * 0.75) 0;
+  }
+}
+
+a {
+  color: currentColor;
+
+  &:focus {
+    opacity: 0.8;
+    outline: none;
+  }
+
+  &:active {
+    opacity: 0.7;
+    outline: none;
+  }
+}
+
+svg {
+  vertical-align: middle;
+}

@@ -1,0 +1,95 @@
+@use '../abstracts/variables' as *;
+@use 'card';
+
+// Resources + HR pages: cream panels holding white link rows
+
+.link-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @include md {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  // On mobile the columns disappear so panels keep their original order
+  &__column {
+    display: contents;
+
+    @include md {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 28px;
+      min-width: 0;
+    }
+  }
+}
+
+.link-panel {
+  @include card.box-padding;
+  background: $color-cream;
+
+  @include md {
+    // Order only matters for the mobile stack
+    order: 0 !important;
+  }
+
+  &__title {
+    margin: 0 0 10px;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(22px * var(--fs-scale));
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__intro {
+    margin: 0 0 20px;
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 56px;
+    padding: 14px 20px 14px 24px;
+    background: $color-white;
+    color: $color-ink;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(19px * var(--fs-scale));
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    svg {
+      flex: none;
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      background: $color-yellow;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+@use '../abstracts/variables' as *;
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  padding: 45px;
+  max-width: 1024px;
+  margin: 0 auto;
+  overflow: hidden;
+
+  @include sm {
+    padding: 24px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+
+    h1 {
+      text-align: center;
+    }
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    a {
+      text-decoration: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .admin {
+      color: rgb(0, 0, 0);
+      background: rgb(1000, 1000, 1000);
+      border: 1px solid rgb(0, 0, 0);
+    }
+
+    .docs {
+      color: rgb(1000, 1000, 1000);
+      background: rgb(0, 0, 0);
+      border: 1px solid rgb(1000, 1000, 1000);
+    }
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    @include md {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .codeLink {
+      text-decoration: none;
+      padding: 0 0.5rem;
+      background: rgb(60, 60, 60);
+      border-radius: 4px;
+    }
+  }
+}
+
+.home {
+  height: auto;
+  min-height: 100vh;
+  justify-content: flex-start;
+  padding-top: 60px;
+}

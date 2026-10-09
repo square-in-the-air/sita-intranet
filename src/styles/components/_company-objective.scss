@@ -1,0 +1,67 @@
+@use '../abstracts/variables' as *;
+@use 'card';
+
+// Homepage: link through to the company objectives
+
+.company-objective {
+  @include card.box-padding;
+  display: block;
+  background: $color-mint-light;
+  color: $color-ink;
+  text-decoration: none;
+
+  &__label {
+    margin: 0 0 12px;
+    font-size: calc(9px * var(--fs-scale));
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    max-width: 30em;
+    margin: 0 0 20px;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(20px * var(--fs-scale));
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    @include md {
+      font-size: calc(22px * var(--fs-scale));
+    }
+  }
+
+  &__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-size: calc(var(--body-size) * 0.9 * var(--fs-scale));
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    background: $color-white;
+    color: $color-ink;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    svg {
+      width: 8px;
+      height: 8px;
+    }
+  }
+
+  &:hover &__icon {
+    background: $color-yellow;
+  }
+}

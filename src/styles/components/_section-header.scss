@@ -1,0 +1,40 @@
+@use '../abstracts/variables' as *;
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  &__title {
+    margin: 0;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(20px * var(--fs-scale));
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-size: calc(11px * var(--fs-scale));
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+
+  &__arrow {
+    width: 8px;
+    height: 8px;
+  }
+}

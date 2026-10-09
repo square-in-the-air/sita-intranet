@@ -1,0 +1,87 @@
+@use '../abstracts/variables' as *;
+
+.socials {
+  display: flex;
+  gap: 5px;
+
+  &__link {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid $color-ink;
+    color: $color-ink;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background: $color-ink;
+      color: $color-white;
+    }
+  }
+}
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 48px;
+    padding: 8px 12px 8px 19px;
+    background: $color-mint-light;
+    color: $color-ink;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(19px * var(--fs-scale));
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    svg {
+      flex: none;
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      background: $color-mint;
+    }
+
+    &--highlight {
+      background: $color-yellow;
+
+      &:hover {
+        background: $color-ink;
+        color: $color-yellow;
+      }
+    }
+
+    &--dark {
+      background: $color-ink;
+      color: $color-white;
+
+      &:hover {
+        background: $color-yellow;
+        color: $color-ink;
+      }
+    }
+  }
+}

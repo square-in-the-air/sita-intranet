@@ -1,0 +1,93 @@
+@use '../abstracts/variables' as *;
+
+.kudos-card {
+  display: block;
+  padding: 22px;
+  background: $color-cream;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.15s ease;
+
+  &:is(a):hover {
+    background: $color-mint-light;
+  }
+
+  &__avatars {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  &__avatar {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    background: $color-placeholder;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(22px * var(--fs-scale));
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  &__names {
+    margin: 0;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(18px * var(--fs-scale));
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__date {
+    font-size: calc(13px * var(--fs-scale));
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__message {
+    margin: 0;
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+  }
+}
+
+// People panel on the Kudos board cards (sits in the inspo-card image slot)
+.kudos-people {
+  display: flex;
+  gap: 2px;
+  background: $color-white;
+
+  &__person {
+    display: grid;
+    flex: 1;
+    place-items: center;
+    min-height: 160px;
+    background: $color-placeholder;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(40px * var(--fs-scale));
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}

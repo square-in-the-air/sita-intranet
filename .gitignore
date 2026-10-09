@@ -48,3 +48,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Compiled CSS from the VS Code Sass extension (Next builds src/styles itself)
+/css/

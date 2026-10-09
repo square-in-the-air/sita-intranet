@@ -1,0 +1,85 @@
+@use '../abstracts/variables' as *;
+@use 'card';
+
+.objectives {
+  margin-bottom: 40px;
+  scroll-margin-top: 24px;
+
+  @include md {
+    margin-bottom: 52px;
+  }
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 16px;
+    margin-bottom: 12px;
+  }
+
+  &__heading {
+    margin: 0;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(24px * var(--fs-scale));
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    @include md {
+      font-size: calc(28px * var(--fs-scale));
+    }
+  }
+
+  &__label {
+    margin: 0;
+    font-size: calc(9px * var(--fs-scale));
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    display: grid;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include sm {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+.objective {
+  @include card.box-padding;
+  background: $color-mint-light;
+
+  &__number {
+    display: block;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(46px * var(--fs-scale));
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    margin: 0 0 8px;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(19px * var(--fs-scale));
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__text {
+    margin: 0;
+    font-size: calc(11px * var(--fs-scale));
+    line-height: 1.5;
+  }
+}
