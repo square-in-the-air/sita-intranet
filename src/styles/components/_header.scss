@@ -1,0 +1,202 @@
+@use '../abstracts/variables' as *;
+
+.header {
+  background: $color-ink;
+  color: $color-white;
+
+  .header__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px 24px;
+
+    @include md {
+      flex-wrap: nowrap;
+    }
+    min-height: 61px;
+    padding: 12px 0;
+
+    .header__logo-link {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .header__logo-img {
+      display: block;
+      height: 32px;
+      width: auto;
+    }
+
+    .header__logo-text {
+      font-family: $font-display;
+      font-weight: 400;
+      font-size: calc(20px * var(--fs-scale));
+      letter-spacing: 0.05em;
+    }
+
+    // Icon only until clicked, then the form widens to the left and pushes the nav along
+    .header__search {
+      display: none;
+      flex: none;
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+      background: transparent;
+      transition:
+        width 0.3s ease,
+        background 0.3s ease;
+
+      @include md {
+        display: flex;
+      }
+
+      &--open {
+        width: 300px;
+        background: $color-ink-soft;
+      }
+    }
+
+    .header__search-button {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .header__search-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .header__search-input {
+      appearance: none;
+      flex: 1;
+      min-width: 0;
+      width: 0;
+      height: 100%;
+      // No padding while closed, otherwise it pushes the icon out of the 40px box
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: $color-white;
+      font: inherit;
+      font-size: calc(13px * var(--fs-scale));
+      opacity: 0;
+      transition: opacity 0.2s ease;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .header__search--open .header__search-input {
+      padding-left: 16px;
+      opacity: 1;
+    }
+
+    .header__toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      margin-left: auto;
+      padding: 0 8px;
+      border: 0;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+
+      @include md {
+        display: none;
+      }
+    }
+
+    .header__toggle-bar {
+      display: block;
+      height: 2px;
+      background: currentColor;
+      transition:
+        transform 0.2s,
+        opacity 0.2s;
+    }
+
+    .header__toggle--open {
+      .header__toggle-bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      .header__toggle-bar:nth-child(2) {
+        opacity: 0;
+      }
+
+      .header__toggle-bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+    }
+
+    .header__nav {
+      display: none;
+      flex-direction: column;
+      order: 3;
+      flex: 1 0 100%;
+      gap: 8px;
+
+      &--open {
+        display: flex;
+      }
+
+      @include md {
+        display: flex;
+        flex-direction: row;
+        order: 0;
+        flex: 0 1 auto;
+        justify-content: center;
+        gap: 24px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin-left: auto;
+      }
+
+      @include lg {
+        gap: 28px;
+      }
+    }
+
+    .header__link {
+      flex: none;
+      padding: 4px 0;
+      color: inherit;
+      font-size: calc(11px * var(--fs-scale));
+      line-height: 1.4;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-decoration: none;
+      opacity: 0.7;
+
+      &:hover,
+      &--active {
+        opacity: 1;
+      }
+
+      &--active {
+        text-decoration: underline;
+        text-underline-offset: 6px;
+      }
+    }
+  }
+}

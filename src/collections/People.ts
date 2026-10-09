@@ -1,5 +1,10 @@
 import type { CollectionConfig } from 'payload'
 
+export const birthdayMonths = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+].map((label) => ({ label, value: label.slice(0, 3).toLowerCase() }))
+
 export const People: CollectionConfig = {
   slug: 'people',
   admin: {
@@ -78,10 +83,63 @@ export const People: CollectionConfig = {
       name: 'startDate',
       type: 'date',
       admin: {
+        description: 'Drives the new starter box and work anniversaries on the What’s On page.',
         date: {
           pickerAppearance: 'dayOnly',
         },
       },
+    },
+    {
+      // Day + month only, so we never store anyone's birth year
+      type: 'row',
+      fields: [
+        {
+          name: 'birthdayDay',
+          label: 'Birthday (day)',
+          type: 'number',
+          min: 1,
+          max: 31,
+          admin: { width: '50%' },
+        },
+        {
+          name: 'birthdayMonth',
+          label: 'Birthday (month)',
+          type: 'select',
+          options: birthdayMonths,
+          admin: {
+            width: '50%',
+            description: 'Leave blank if they’d rather it wasn’t shown on the What’s On page.',
+          },
+        },
+      ],
+    },
+    {
+      type: 'collapsible',
+      label: 'New starter',
+      admin: {
+        initCollapsed: true,
+        description: 'Shown in the New starters box on the What’s On page around their start date.',
+      },
+      fields: [
+        {
+          name: 'newStarterIntro',
+          label: 'Intro line',
+          type: 'text',
+          maxLength: 80,
+          admin: {
+            description: 'e.g. “Joining the video and creative team.” Defaults to their department.',
+          },
+        },
+        {
+          name: 'newStarterSlide',
+          label: 'New starter slide',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description: 'Upload the intro slide (PDF, PowerPoint or image). The box links to it.',
+          },
+        },
+      ],
     },
   ],
 }

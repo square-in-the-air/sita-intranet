@@ -1,0 +1,46 @@
+@use '../abstracts/variables' as *;
+@use 'card';
+
+.inspo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &--board {
+    gap: 11px;
+  }
+}
+
+.inspo-card {
+  @include card.card;
+  display: grid;
+  background: $color-cream;
+
+  @include xs {
+    grid-template-columns: 47% 1fr;
+    min-height: 172px;
+  }
+
+  &__image {
+    aspect-ratio: 16 / 9;
+    background: $color-placeholder;
+
+    @include xs {
+      aspect-ratio: auto;
+    }
+  }
+
+  // Home page cards keep the smaller title (large board cards use the shared size)
+  &:not(&--large) &__title {
+    font-size: calc(22px * var(--fs-scale));
+    line-height: 1;
+
+    @include md {
+      font-size: calc(22px * 4 / 3 * var(--fs-scale));
+    }
+  }
+
+  &--large {
+    @include card.card-large('inspo-card');
+  }
+}

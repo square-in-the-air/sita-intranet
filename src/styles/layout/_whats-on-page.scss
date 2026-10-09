@@ -1,0 +1,179 @@
+@use '../abstracts/variables' as *;
+@use '../components/card';
+
+// What's On page: events on the left, people stuff on the right
+
+.whats-on-page {
+  display: grid;
+  gap: 48px;
+
+  @include md {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 50px;
+    align-items: start;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+  }
+
+  &__aside {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  &__empty {
+    @include card.box-padding;
+    margin: 0;
+    background: $color-mint-light;
+  }
+
+  .view-more {
+    margin-top: 24px;
+  }
+}
+
+// Upcoming event card
+.event-card {
+  @include card.box-padding;
+  background: $color-mint-light;
+
+  &__date {
+    margin: 0 0 10px;
+    font-size: calc(13px * var(--fs-scale));
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 0 12px;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(28px * var(--fs-scale));
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+
+    @include md {
+      font-size: calc(32px * var(--fs-scale));
+    }
+  }
+
+  &__organiser {
+    margin: 0 0 20px;
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+  }
+
+  &__text {
+    margin: 0;
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+  }
+}
+
+// New starter (dark). Links to the intro slide when there is one.
+.new-starter-box {
+  position: relative;
+  display: block;
+  padding: 26px 30px 28px;
+  background: $color-ink;
+  color: $color-white;
+  text-decoration: none;
+
+  &__date {
+    margin: 0 0 6px;
+    color: $color-yellow;
+    font-size: calc(13px * var(--fs-scale));
+    line-height: 1.4;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 0 6px;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(20px * var(--fs-scale));
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__intro {
+    margin: 0;
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &--link {
+    padding-right: 60px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: $color-ink-soft;
+    }
+
+    &:hover .new-starter-box__arrow {
+      color: $color-yellow;
+    }
+  }
+}
+
+// Birthdays (yellow) and work anniversaries (cream)
+.date-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  @include card.box-padding;
+
+  &--yellow {
+    background: $color-yellow;
+  }
+
+  &--cream {
+    background: $color-cream;
+  }
+
+  &__label {
+    margin: 0 0 4px;
+    font-size: calc(13px * var(--fs-scale));
+    line-height: 1.4;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  &__names {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(20px * var(--fs-scale));
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__empty {
+    margin: 0;
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+  }
+}

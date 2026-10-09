@@ -1,0 +1,119 @@
+// Design tokens — use with `@use '../abstracts/variables' as *;`
+@use 'sass:map';
+
+// Breakpoints
+$bp-xl: 1024px;
+$bp-lg: 900px;
+$bp-md: 768px;
+$bp-sm: 600px;
+$bp-xs: 400px;
+
+// Colours
+$color-black: rgb(0, 0, 0);
+$color-white: rgb(255, 255, 255);
+$color-border: rgba(255, 255, 255, 0.2);
+$color-border-hover: rgba(255, 255, 255, 0.6);
+
+// Brand palette (sampled from the latest homepage, What's On and article designs)
+$color-ink: #0d1b1e;
+$color-ink-soft: #202d30;
+$color-mint: #d8eeea;
+$color-mint-light: #eff8f7;
+$color-yellow: #ffe900;
+$color-cream: #fff7ec;
+$color-placeholder: #d9d9d9;
+$color-orange: #fb4c06;
+$color-coral: #ff5a36;
+
+// Fonts (CSS variables are set by next/font in layout.tsx)
+$font-display: var(--font-display), 'Arial Narrow', sans-serif;
+$font-body: var(--font-body), system-ui, sans-serif;
+
+// Radius
+$radius-sm: 4px;
+$radius-md: 8px;
+
+// /*
+// Breakpoints and Containers
+// ***********
+// */
+
+$breakpoints: (
+  xs: 414px,
+  sm: 768px,
+  md: 1024px,
+  lg: 1352px,
+  xl: 1920px,
+);
+
+@mixin respond($breakpoint) {
+  $size: map.get($breakpoints, $breakpoint);
+  @if $size != null {
+    @media (min-width: $size) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint `#{$breakpoint}` not found in $breakpoints map.";
+  }
+}
+@mixin xs {
+  @media (min-width: 550px) {
+    @content;
+  }
+}
+@mixin sm {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+@mixin md {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+@mixin lg {
+  @media (min-width: 1352px) {
+    @content;
+  }
+}
+@mixin xl {
+  @media (min-width: 1920px) {
+    @content;
+  }
+}
+
+$container-widths: (
+  'sm': 100px,
+  'md': 125px,
+  'lg': 200px,
+  'xl': 600px,
+);
+
+.container {
+  margin: 0 auto;
+  width: calc(100% - 40px);
+
+  @each $break, $offset in $container-widths {
+    @include respond($break) {
+      width: calc(100% - #{$offset});
+    }
+  }
+}
+
+$header-container-widths: (
+  'sm': 100px,
+  'md': 125px,
+  'lg': 200px,
+  'xl': 600px,
+);
+
+.header-container {
+  margin: 0 auto;
+  width: calc(100% - 40px);
+
+  @each $break, $offset in $header-container-widths {
+    @include respond($break) {
+      width: calc(100% - #{$offset});
+    }
+  }
+}

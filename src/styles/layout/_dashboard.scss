@@ -1,0 +1,97 @@
+@use '../abstracts/variables' as *;
+
+// Homepage dashboard layout
+
+.welcome {
+  background: $color-mint;
+
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
+    padding: 24px 0;
+
+    @include md {
+      padding: 28px 0;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(32px * var(--fs-scale));
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+
+    @include md {
+      font-size: calc(46px * var(--fs-scale));
+    }
+  }
+
+  &__date {
+    margin: 0;
+    font-size: calc(11px * var(--fs-scale));
+    line-height: 1.4;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+}
+
+.dashboard {
+  padding-bottom: 64px;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+    margin-top: 40px;
+
+    @include md {
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+      column-gap: 45px;
+      margin-top: 52px;
+    }
+
+    @include lg {
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    }
+  }
+
+  // On mobile the two columns "dissolve" so every section becomes a direct
+  // grid item. That lets Quick links jump to the top, under the search bar.
+  &__main,
+  &__aside {
+    display: contents;
+
+    @include md {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      min-width: 0;
+    }
+  }
+
+  &__quick-links {
+    order: -1;
+
+    @include md {
+      order: 0;
+    }
+  }
+
+  &__aside {
+    @include md {
+      gap: 72px;
+    }
+  }
+
+  &__empty {
+    margin: 0;
+    padding: 24px;
+    background: $color-mint-light;
+  }
+}

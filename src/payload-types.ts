@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     news: News;
     people: Person;
+    events: Event;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -91,8 +93,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    ticker: Ticker;
+  };
+  globalsSelect: {
+    ticker: TickerSelect<false> | TickerSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -175,6 +181,10 @@ export interface News {
   id: number;
   title: string;
   /**
+   * Shown above the title on news cards.
+   */
+  author?: (number | null) | Person;
+  /**
    * Auto-generated from the title. Used in the news URL.
    */
   slug?: string | null;
@@ -221,7 +231,49 @@ export interface Person {
    * A couple of sentences for the profile page. Written by the person themselves where possible.
    */
   shortBio?: string | null;
+  /**
+   * Drives the new starter box and work anniversaries on the What’s On page.
+   */
   startDate?: string | null;
+  birthdayDay?: number | null;
+  /**
+   * Leave blank if they’d rather it wasn’t shown on the What’s On page.
+   */
+  birthdayMonth?:
+    ('jan' | 'feb' | 'mar' | 'apr' | 'may' | 'jun' | 'jul' | 'aug' | 'sep' | 'oct' | 'nov' | 'dec') | null;
+  /**
+   * e.g. “Joining the video and creative team.” Defaults to their department.
+   */
+  newStarterIntro?: string | null;
+  /**
+   * Upload the intro slide (PDF, PowerPoint or image). The box links to it.
+   */
+  newStarterSlide?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Shown on the What’s On page and in the What’s On box on the homepage.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  /**
+   * Max 8 words.
+   */
+  title: string;
+  date: string;
+  /**
+   * Shows as “XX Nov 2026” until the exact day is known.
+   */
+  dayToBeConfirmed?: boolean | null;
+  organiser?: (number | null) | Person;
+  /**
+   * Max 50 words.
+   */
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -264,6 +316,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'people';
         value: number | Person;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -355,6 +411,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface NewsSelect<T extends boolean = true> {
   title?: T;
+  author?: T;
   slug?: T;
   excerpt?: T;
   heroImage?: T;
@@ -379,6 +436,23 @@ export interface PeopleSelect<T extends boolean = true> {
   workEmail?: T;
   shortBio?: T;
   startDate?: T;
+  birthdayDay?: T;
+  birthdayMonth?: T;
+  newStarterIntro?: T;
+  newStarterSlide?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  date?: T;
+  dayToBeConfirmed?: T;
+  organiser?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -421,6 +495,45 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * The scrolling banner at the top of the homepage.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ticker".
+ */
+export interface Ticker {
+  id: number;
+  enabled?: boolean | null;
+  messages?:
+    | {
+        text: string;
+        /**
+         * Optional. A page on the Hub (e.g. /whats-on) or a full URL.
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ticker_select".
+ */
+export interface TickerSelect<T extends boolean = true> {
+  enabled?: T;
+  messages?:
+    | T
+    | {
+        text?: T;
+        link?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

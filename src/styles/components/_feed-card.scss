@@ -1,0 +1,28 @@
+@use '../abstracts/variables' as *;
+@use 'card';
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+// Board layout used on the News feed page
+.feed--board {
+  gap: 11px;
+}
+
+.feed-card {
+  @include card.card;
+  display: block;
+  background: $color-mint-light;
+
+  &__image {
+    aspect-ratio: 7 / 2;
+    background: $color-placeholder;
+  }
+
+  &--large {
+    @include card.card-large('feed-card');
+  }
+}

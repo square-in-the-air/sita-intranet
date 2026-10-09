@@ -1,0 +1,81 @@
+@use '../abstracts/variables' as *;
+
+// Inner page layout: mint title band + content area
+
+.page-hero {
+  background: $color-mint;
+
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding: 32px 0;
+
+    @include md {
+      padding: 30px 0;
+      min-height: 114px;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(32px * var(--fs-scale));
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+
+    @include md {
+      font-size: calc(46px * var(--fs-scale));
+    }
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    min-height: 48px;
+    padding: 8px 16px 8px 19px;
+    background: $color-yellow;
+    color: $color-ink;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(19px * var(--fs-scale));
+    line-height: 1;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &:hover {
+      background: $color-ink;
+      color: $color-yellow;
+    }
+  }
+}
+
+.page {
+  padding: 32px 0 48px;
+
+  @include md {
+    padding: 46px 0 44px;
+  }
+}
+
+// Pages that open straight into cards get a little more breathing room
+.page--panels {
+  @include md {
+    padding-top: 58px;
+  }
+}

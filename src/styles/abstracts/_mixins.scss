@@ -1,0 +1,8 @@
+@use 'variables' as *;
+
+// Usage: @include below($bp-sm) { ... }
+@mixin below($bp) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}

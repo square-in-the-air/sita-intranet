@@ -1,0 +1,44 @@
+@use '../abstracts/variables' as *;
+
+.view-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+
+  &--start {
+    justify-content: flex-start;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-size: calc(var(--body-size) * 0.9 * var(--fs-scale));
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    &:hover .view-more__icon {
+      background: $color-ink;
+      color: $color-yellow;
+    }
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 23px;
+    height: 23px;
+    background: $color-yellow;
+    color: $color-ink;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    svg {
+      width: 8px;
+      height: 8px;
+    }
+  }
+}

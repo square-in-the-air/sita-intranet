@@ -1,0 +1,42 @@
+@use '../abstracts/variables' as *;
+
+// Homepage: yellow call-out for the anonymous feedback form
+
+.feedback-link {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px 16px;
+  margin-top: 26px;
+  padding: 20px 20px 22px;
+  background: $color-yellow;
+  color: $color-ink;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &__title {
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: calc(19px * var(--fs-scale));
+    line-height: 1.05;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &__arrow {
+    width: 14px;
+    height: 14px;
+  }
+
+  &__text {
+    grid-column: 1 / -1;
+    font-size: calc(var(--body-size) * var(--fs-scale));
+    line-height: calc(var(--body-lh) * var(--fs-scale));
+  }
+
+  &:hover {
+    background: $color-ink;
+    color: $color-yellow;
+  }
+}

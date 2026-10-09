@@ -34,6 +34,15 @@ export const News: CollectionConfig = {
       required: true,
     },
     {
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'people',
+      admin: {
+        position: 'sidebar',
+        description: 'Shown above the title on news cards.',
+      },
+    },
+    {
       name: 'slug',
       type: 'text',
       unique: true,

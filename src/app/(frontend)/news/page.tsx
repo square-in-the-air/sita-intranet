@@ -1,23 +1,24 @@
 import { getPayload } from 'payload'
-import Link from 'next/link'
 import React from 'react'
 
 import config from '@/payload.config'
-import { NewsCard, type NewsCardItem } from '../_components/NewsCard'
-import '../styles.css'
+import { PageHero } from '../_components/PageHero'
+import { ViewMore } from '../_components/ViewMore'
+import { FeedCard, type FeedCardItem } from '../_components/home/FeedCard'
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 4
+
+export const metadata = { title: 'News Feed | SITA Intranet' }
 
 export default async function NewsIndexPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string }>
+  searchParams: Promise<{ show?: string }>
 }) {
-  const { page: pageParam } = await searchParams
-  const page = Number(pageParam) > 0 ? Number(pageParam) : 1
+  const { show } = await searchParams
+  const count = Math.max(PAGE_SIZE, Number(show) || PAGE_SIZE)
 
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
+  const payload = await getPayload({ config: await config })
 
   const news = await payload.find({
     collection: 'news',
@@ -27,41 +28,25 @@ export default async function NewsIndexPage({
       },
     },
     sort: '-publishedDate',
-    limit: PAGE_SIZE,
-    page,
+    limit: count,
     depth: 1,
   })
 
   return (
-    <div className="home">
-      <section className="news-section">
-        <div className="news-section__header">
-          <h2>News</h2>
-        </div>
-
+    <>
+      <PageHero title="News feed" />
+      <div className="page container">
         {news.docs.length === 0 ? (
-          <p className="news-empty">No news posts yet.</p>
+          <p className="dashboard__empty">No news posts yet.</p>
         ) : (
-          <div className="news-grid">
+          <div className="feed feed--board">
             {news.docs.map((doc) => (
-              <NewsCard key={doc.id} item={doc as unknown as NewsCardItem} />
+              <FeedCard key={doc.id} item={doc as unknown as FeedCardItem} size="large" />
             ))}
           </div>
         )}
-
-        <div className="news-pagination">
-          {news.hasPrevPage && (
-            <Link href={`/news?page=${news.prevPage}`} className="button button--outline">
-              Newer
-            </Link>
-          )}
-          {news.hasNextPage && (
-            <Link href={`/news?page=${news.nextPage}`} className="button button--outline">
-              Older
-            </Link>
-          )}
-        </div>
-      </section>
-    </div>
+        {news.totalDocs > count && <ViewMore href={`/news?show=${count + PAGE_SIZE}`} />}
+      </div>
+    </>
   )
 }
