@@ -67,11 +67,13 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    events: Event;
+    news: News;
+    inspo: Inspo;
+    kudos: Kudos;
     users: User;
     media: Media;
-    news: News;
     people: Person;
-    events: Event;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,11 +81,13 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    events: EventsSelect<false> | EventsSelect<true>;
+    news: NewsSelect<false> | NewsSelect<true>;
+    inspo: InspoSelect<false> | InspoSelect<true>;
+    kudos: KudosSelect<false> | KudosSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    news: NewsSelect<false> | NewsSelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
-    events: EventsSelect<false> | EventsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -94,13 +98,24 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    hr: Hr;
+    resources: Resource;
+    logo: Logo;
+    navigation: Navigation;
+    'quick-links': QuickLink;
     ticker: Ticker;
   };
   globalsSelect: {
+    hr: HrSelect<false> | HrSelect<true>;
+    resources: ResourcesSelect<false> | ResourcesSelect<true>;
+    logo: LogoSelect<false> | LogoSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+    'quick-links': QuickLinksSelect<false> | QuickLinksSelect<true>;
     ticker: TickerSelect<false> | TickerSelect<true>;
   };
   locale: null;
   widgets: {
+    'ordered-collections': OrderedCollectionsWidget;
     collections: CollectionsWidget;
   };
   user: User;
@@ -128,91 +143,29 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Shown on the What’s On page and in the What’s On box on the homepage.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "events".
  */
-export interface User {
+export interface Event {
   id: number;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
- */
-export interface News {
-  id: number;
+  /**
+   * Max 8 words.
+   */
   title: string;
+  date: string;
   /**
-   * Shown above the title on news cards.
+   * Shows as “XX Nov 2026” until the exact day is known.
    */
-  author?: (number | null) | Person;
+  dayToBeConfirmed?: boolean | null;
+  organiser?: (number | null) | Person;
   /**
-   * Auto-generated from the title. Used in the news URL.
+   * Max 50 words.
    */
-  slug?: string | null;
-  /**
-   * Short summary shown on news cards. Keep it to a sentence or two.
-   */
-  excerpt?: string | null;
-  heroImage?: (number | null) | Media;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  department?: ('all' | 'activation' | 'creative' | 'design' | 'pr' | 'social' | 'video') | null;
-  publishedDate: string;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -253,29 +206,180 @@ export interface Person {
   createdAt: string;
 }
 /**
- * Shown on the What’s On page and in the What’s On box on the homepage.
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events".
+ * via the `definition` "media".
  */
-export interface Event {
+export interface Media {
   id: number;
-  /**
-   * Max 8 words.
-   */
-  title: string;
-  date: string;
-  /**
-   * Shows as “XX Nov 2026” until the exact day is known.
-   */
-  dayToBeConfirmed?: boolean | null;
-  organiser?: (number | null) | Person;
-  /**
-   * Max 50 words.
-   */
-  description?: string | null;
+  alt: string;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news".
+ */
+export interface News {
+  id: number;
+  title: string;
+  /**
+   * Shown above the title on news cards.
+   */
+  author?: (number | null) | Person;
+  /**
+   * Auto-generated from the title. Used in the /news URL.
+   */
+  slug?: string | null;
+  /**
+   * Short summary shown on news cards. Keep it to a sentence or two.
+   */
+  excerpt?: string | null;
+  heroImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  department?: ('all' | 'activation' | 'creative' | 'design' | 'pr' | 'social' | 'video') | null;
+  publishedDate: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inspo".
+ */
+export interface Inspo {
+  id: number;
+  title: string;
+  /**
+   * Shown above the title on inspo cards.
+   */
+  author?: (number | null) | Person;
+  /**
+   * Auto-generated from the title. Used in the /inspo-board URL.
+   */
+  slug?: string | null;
+  /**
+   * Short summary shown on inspo cards. Keep it to a sentence or two.
+   */
+  excerpt?: string | null;
+  heroImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  department?: ('all' | 'activation' | 'creative' | 'design' | 'pr' | 'social' | 'video') | null;
+  publishedDate: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kudos".
+ */
+export interface Kudos {
+  id: number;
+  /**
+   * Who the kudos is for, e.g. “Tom & Kiane”.
+   */
+  title: string;
+  /**
+   * Their photos (or initials) are shown on the kudos card.
+   */
+  recipients?: (number | Person)[] | null;
+  /**
+   * Who is giving the kudos.
+   */
+  author?: (number | null) | Person;
+  /**
+   * Auto-generated from the title. Used in the /kudos-board URL.
+   */
+  slug?: string | null;
+  /**
+   * The kudos message shown on the cards. Keep it to a sentence or two.
+   */
+  excerpt?: string | null;
+  heroImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  department?: ('all' | 'activation' | 'creative' | 'design' | 'pr' | 'social' | 'video') | null;
+  publishedDate: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -302,6 +406,22 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'events';
+        value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'news';
+        value: number | News;
+      } | null)
+    | ({
+        relationTo: 'inspo';
+        value: number | Inspo;
+      } | null)
+    | ({
+        relationTo: 'kudos';
+        value: number | Kudos;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -310,16 +430,8 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'news';
-        value: number | News;
-      } | null)
-    | ({
         relationTo: 'people';
         value: number | Person;
-      } | null)
-    | ({
-        relationTo: 'events';
-        value: number | Event;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -365,6 +477,71 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  date?: T;
+  dayToBeConfirmed?: T;
+  organiser?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news_select".
+ */
+export interface NewsSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  slug?: T;
+  excerpt?: T;
+  heroImage?: T;
+  content?: T;
+  department?: T;
+  publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inspo_select".
+ */
+export interface InspoSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  slug?: T;
+  excerpt?: T;
+  heroImage?: T;
+  content?: T;
+  department?: T;
+  publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "kudos_select".
+ */
+export interface KudosSelect<T extends boolean = true> {
+  title?: T;
+  recipients?: T;
+  author?: T;
+  slug?: T;
+  excerpt?: T;
+  heroImage?: T;
+  content?: T;
+  department?: T;
+  publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -407,23 +584,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news_select".
- */
-export interface NewsSelect<T extends boolean = true> {
-  title?: T;
-  author?: T;
-  slug?: T;
-  excerpt?: T;
-  heroImage?: T;
-  content?: T;
-  department?: T;
-  publishedDate?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "people_select".
  */
 export interface PeopleSelect<T extends boolean = true> {
@@ -440,19 +600,6 @@ export interface PeopleSelect<T extends boolean = true> {
   birthdayMonth?: T;
   newStarterIntro?: T;
   newStarterSlide?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "events_select".
- */
-export interface EventsSelect<T extends boolean = true> {
-  title?: T;
-  date?: T;
-  dayToBeConfirmed?: T;
-  organiser?: T;
-  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -497,6 +644,140 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * The sections and documents on the HR page. Drag sections to reorder them, then save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hr".
+ */
+export interface Hr {
+  id: number;
+  sections?:
+    | {
+        title: string;
+        /**
+         * Optional. A short line shown under the section title.
+         */
+        intro?: string | null;
+        documents?:
+          | {
+              /**
+               * The name shown on the page.
+               */
+              label: string;
+              /**
+               * Upload a document, or pick one already in the media library.
+               */
+              file?: (number | null) | Media;
+              /**
+               * Optional. Use instead of a file to link to a page on the Hub (e.g. /whats-on) or a full URL.
+               */
+              link?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The sections and documents on the Resources page. Drag sections to reorder them, then save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resources".
+ */
+export interface Resource {
+  id: number;
+  sections?:
+    | {
+        title: string;
+        /**
+         * Optional. A short line shown under the section title.
+         */
+        intro?: string | null;
+        documents?:
+          | {
+              /**
+               * The name shown on the page.
+               */
+              label: string;
+              /**
+               * Upload a document, or pick one already in the media library.
+               */
+              file?: (number | null) | Media;
+              /**
+               * Optional. Use instead of a file to link to a page on the Hub (e.g. /whats-on) or a full URL.
+               */
+              link?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The logo in the site header and footer. Pick or upload a new image, then save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logo".
+ */
+export interface Logo {
+  id: number;
+  /**
+   * Use a light-coloured SVG or PNG with a transparent background.
+   */
+  image: number | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The main menu in the site header. Drag to reorder, edit a link, then save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  items?:
+    | {
+        label: string;
+        /**
+         * A page on the Hub (e.g. /whats-on) or a full URL.
+         */
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The quick links on the homepage. Drag to reorder, edit a link, then save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quick-links".
+ */
+export interface QuickLink {
+  id: number;
+  items?:
+    | {
+        label: string;
+        /**
+         * A page on the Hub (e.g. /resources) or a full URL.
+         */
+        link: string;
+        style?: ('default' | 'highlight' | 'dark') | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The scrolling banner at the top of the homepage.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -520,6 +801,97 @@ export interface Ticker {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hr_select".
+ */
+export interface HrSelect<T extends boolean = true> {
+  sections?:
+    | T
+    | {
+        title?: T;
+        intro?: T;
+        documents?:
+          | T
+          | {
+              label?: T;
+              file?: T;
+              link?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resources_select".
+ */
+export interface ResourcesSelect<T extends boolean = true> {
+  sections?:
+    | T
+    | {
+        title?: T;
+        intro?: T;
+        documents?:
+          | T
+          | {
+              label?: T;
+              file?: T;
+              link?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logo_select".
+ */
+export interface LogoSelect<T extends boolean = true> {
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quick-links_select".
+ */
+export interface QuickLinksSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        style?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ticker_select".
  */
 export interface TickerSelect<T extends boolean = true> {
@@ -534,6 +906,16 @@ export interface TickerSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ordered-collections_widget".
+ */
+export interface OrderedCollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

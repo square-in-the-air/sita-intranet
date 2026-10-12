@@ -82,13 +82,10 @@
 
   &__excerpt,
   &__text {
-    margin: 0 0 15px;
+    // Keeps at least 1rem between the text and the absolutely positioned "Read more"
+    margin: 0 0 1rem;
     font-size: calc(var(--body-size) * var(--fs-scale));
     line-height: calc(var(--body-lh) * var(--fs-scale));
-
-    @include md {
-      margin-bottom: 0;
-    }
   }
 
   // "Read more" is pinned flush to the card's bottom-right corner, outside the flow
