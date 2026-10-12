@@ -3,7 +3,8 @@ import { ArrowIcon } from './icons'
 export type LinkPanel = {
   title: string
   intro?: string
-  links: { label: string; href: string }[]
+  // newTab: uploaded files open in a new tab (PDFs show in the browser, Word etc. download and open)
+  links: { label: string; href: string; newTab?: boolean }[]
 }
 
 const isExternal = (href: string) => /^https?:\/\//.test(href)
@@ -36,7 +37,7 @@ export function LinkPanels({ panels }: { panels: LinkPanel[] }) {
                     <a
                       href={link.href}
                       className="link-panel__link"
-                      {...(isExternal(link.href) ? { target: '_blank', rel: 'noreferrer' } : {})}
+                      {...(link.newTab || isExternal(link.href) ? { target: '_blank', rel: 'noreferrer' } : {})}
                     >
                       {link.label}
                       <ArrowIcon />

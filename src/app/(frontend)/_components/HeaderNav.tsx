@@ -4,17 +4,10 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export const navLinks = [
-  { label: 'News', href: '/news' },
-  { label: 'Resources', href: '/resources' },
-  { label: 'HR', href: '/hr' },
-  { label: 'Inspo board', href: '/inspo-board' },
-  { label: 'Kudos board', href: '/kudos-board' },
-  { label: 'What’s on', href: '/whats-on' },
-]
+export type NavLink = { label: string; href: string }
 
 // Client component so it can highlight the page you're on
-export function HeaderNav() {
+export function HeaderNav({ navLinks }: { navLinks: NavLink[] }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -49,7 +42,7 @@ export function HeaderNav() {
         const active = isActive(link.href)
         return (
           <Link
-            key={link.href}
+            key={`${link.href}-${link.label}`}
             href={link.href}
             className={`header__link${active ? ' header__link--active' : ''}`}
             aria-current={active ? 'page' : undefined}

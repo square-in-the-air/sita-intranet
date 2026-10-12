@@ -1,0 +1,130 @@
+// Match the admin to the front end: fonts and cream background.
+// Font files are the same ones the front end loads (src/fonts).
+@font-face {
+  font-family: 'Lutz Headline';
+  src: url('../../fonts/LutzHeadline-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('../../fonts/AtkinsonHyperlegible-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('../../fonts/AtkinsonHyperlegible-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('../../fonts/AtkinsonHyperlegible-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('../../fonts/AtkinsonHyperlegible-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-serif: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --admin-font-display: 'Lutz Headline', 'Arial Narrow', sans-serif;
+}
+
+// Cream page background (the front end's $color-cream). The light theme's white is
+// --theme-elevation-0; dark mode is left alone.
+html[data-theme='light'] {
+  --theme-bg: #fff7ec;
+  --theme-elevation-0: #fff7ec;
+  // Inputs stay white on the cream page
+  --theme-input-bg: #fff;
+}
+
+// List tables: every row white, separated by a thin line (Payload stripes the odd rows)
+html[data-theme='light'] {
+  .table tbody tr,
+  .table tbody tr:nth-child(odd) {
+    background: #fff;
+    border-radius: 0;
+  }
+
+  .table tbody tr td {
+    border-bottom: 1px solid var(--theme-elevation-150);
+  }
+
+  .table tbody tr td:first-child,
+  .table tbody tr td:last-child {
+    border-radius: 0;
+  }
+
+  // Search bar on list pages
+  .search-filter {
+    background-color: #fff;
+  }
+
+  // Every input type: text, number, date, textarea, selects and dropdowns
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+  textarea,
+  select,
+  .search-filter__input,
+  .rs__control,
+  .rs__menu {
+    background-color: #fff;
+  }
+
+  // Rich text "Content" field: white box with a border and some inner padding
+  .rich-text-lexical__wrap {
+    background-color: #fff;
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: var(--style-radius-s);
+  }
+
+  .rich-text-lexical .editor-container {
+    padding-inline: calc(var(--base) * 0.75);
+    padding-bottom: calc(var(--base) * 0.5);
+  }
+}
+
+// Headings use the display font, like the front end
+h1,
+.dashboard-groups__label {
+  font-family: var(--admin-font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+// Dashboard cards (OrderedCollectionCards): same look as Payload's own grid
+.dashboard-groups {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--base) * 2);
+
+  &__label {
+    margin: 0 0 var(--base);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--base);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}

@@ -8,8 +8,9 @@ export const EVENT_DESCRIPTION_WORDS = 50
 
 export const Events: CollectionConfig = {
   slug: 'events',
-  labels: { singular: 'Event', plural: 'Events' },
+  labels: { singular: 'Event', plural: 'What’s On' },
   admin: {
+    group: 'Posts',
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'organiser'],
     description: 'Shown on the What’s On page and in the What’s On box on the homepage.',

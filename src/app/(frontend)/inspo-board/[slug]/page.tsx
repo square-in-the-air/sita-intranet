@@ -1,28 +1,47 @@
+import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 import React from 'react'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 
-import { Article } from '../../_components/Article'
-import { PlaceholderArticleBody } from '../../_components/PlaceholderArticleBody'
-import { inspoItems, placeholderArticle } from '../../_components/home/placeholderData'
+import config from '@/payload.config'
+import { Article, formatArticleDate } from '../../_components/Article'
 
-export const metadata = { title: 'Inspo Board | SITA Intranet' }
+const getArticle = async (slug: string) => {
+  const payload = await getPayload({ config: await config })
+  const result = await payload.find({
+    collection: 'inspo',
+    where: {
+      slug: { equals: slug },
+      _status: { equals: 'published' },
+    },
+    limit: 1,
+    depth: 1,
+  })
+  return result.docs[0] ?? null
+}
 
-// TODO: swap the placeholder lookup for an Inspo collection in Payload
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const article = await getArticle((await params).slug)
+  return { title: article ? `${article.title} | SITA Intranet` : 'Inspo Board | SITA Intranet' }
+}
+
 export default async function InspoArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const item = inspoItems.find((i) => i.href === `/inspo-board/${slug}`)
-  if (!item) notFound()
+  const article = await getArticle((await params).slug)
+  if (!article) notFound()
+
+  const image = article.heroImage && typeof article.heroImage === 'object' ? article.heroImage : null
+  const author = article.author && typeof article.author === 'object' ? article.author.name : null
 
   return (
     <Article
-      title={item.title}
-      author={item.author}
-      date={placeholderArticle.date}
-      image={item.image ? { url: item.image } : null}
-      lead={placeholderArticle.lead}
+      title={article.title}
+      author={author}
+      date={formatArticleDate(article.publishedDate)}
+      image={image}
+      lead={article.excerpt}
       backHref="/inspo-board"
     >
-      <PlaceholderArticleBody />
+      {article.content && <RichText data={article.content} />}
     </Article>
   )
 }

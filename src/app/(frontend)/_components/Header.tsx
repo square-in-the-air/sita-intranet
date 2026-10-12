@@ -1,11 +1,12 @@
 import Link from 'next/link'
 
 import { getLogo } from '../_lib/getLogo'
+import { getNavLinks } from '../_lib/getNavLinks'
 import { HeaderNav } from './HeaderNav'
 import { HeaderSearch } from './HeaderSearch'
 
 export async function Header() {
-  const logo = await getLogo()
+  const [logo, navLinks] = await Promise.all([getLogo(), getNavLinks()])
 
   return (
     <header className="header">
@@ -21,7 +22,7 @@ export async function Header() {
           </Link>
         </div>
 
-        <HeaderNav />
+        <HeaderNav navLinks={navLinks} />
 
         <HeaderSearch />
       </div>

@@ -1,23 +1,47 @@
+import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 import React from 'react'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 
-import { Article } from '../../_components/Article'
-import { kudosItems } from '../../_components/home/placeholderData'
+import config from '@/payload.config'
+import { Article, formatArticleDate } from '../../_components/Article'
 
-export const metadata = { title: 'Kudos Board | SITA Intranet' }
+const getArticle = async (slug: string) => {
+  const payload = await getPayload({ config: await config })
+  const result = await payload.find({
+    collection: 'kudos',
+    where: {
+      slug: { equals: slug },
+      _status: { equals: 'published' },
+    },
+    limit: 1,
+    depth: 1,
+  })
+  return result.docs[0] ?? null
+}
 
-// TODO: swap the placeholder lookup for a Kudos collection in Payload
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const article = await getArticle((await params).slug)
+  return { title: article ? `${article.title} | SITA Intranet` : 'Kudos Board | SITA Intranet' }
+}
+
 export default async function KudosArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const item = kudosItems.find((k) => k.href === `/kudos-board/${slug}`)
-  if (!item) notFound()
+  const article = await getArticle((await params).slug)
+  if (!article) notFound()
+
+  const image = article.heroImage && typeof article.heroImage === 'object' ? article.heroImage : null
+  const author = article.author && typeof article.author === 'object' ? article.author.name : null
 
   return (
     <Article
-      title={`Kudos: ${item.names}`}
-      date={item.date}
-      lead={item.message}
+      title={article.title}
+      author={author}
+      date={formatArticleDate(article.publishedDate)}
+      image={image}
+      lead={article.excerpt}
       backHref="/kudos-board"
-    />
+    >
+      {article.content && <RichText data={article.content} />}
+    </Article>
   )
 }

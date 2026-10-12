@@ -11,7 +11,14 @@ import { Media } from './collections/Media'
 import { News } from './collections/News'
 import { People } from './collections/People'
 import { Events } from './collections/Events'
+import { Inspo } from './collections/Inspo'
+import { Kudos } from './collections/Kudos'
 import { Ticker } from './globals/Ticker'
+import { Navigation } from './globals/Navigation'
+import { HR } from './globals/HR'
+import { Resources } from './globals/Resources'
+import { Logo } from './globals/Logo'
+import { QuickLinks } from './globals/QuickLinks'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -19,12 +26,26 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    components: {
+      Nav: '/components/OrderedNav#OrderedNav',
+      beforeNavLinks: ['/components/DashboardLink#DashboardLink'],
+    },
+    dashboard: {
+      widgets: [
+        {
+          slug: 'ordered-collections',
+          Component: '/components/OrderedCollectionCards#OrderedCollectionCards',
+          minWidth: 'full',
+        },
+      ],
+      defaultLayout: [{ widgetSlug: 'ordered-collections', width: 'full' }],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, News, People, Events],
-  globals: [Ticker],
+  collections: [Events, News, Inspo, Kudos, Users, Media, People],
+  globals: [HR, Resources, Logo, Navigation, QuickLinks, Ticker],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
