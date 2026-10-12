@@ -12,14 +12,13 @@ import { InspoCard } from './_components/home/InspoCard'
 import { KudosCard } from './_components/home/KudosCard'
 import { QuickLinks } from './_components/home/QuickLinks'
 import { SearchBar } from './_components/home/SearchBar'
+import { toInspoItem, toKudosItem } from './_lib/posts'
 import { SectionHeader } from './_components/home/SectionHeader'
 import { WhatsOn } from './_components/home/WhatsOn'
 import {
   companyObjective,
   feedbackFormHref,
-  inspoItems,
-  kudosItems,
-  quickLinks,
+  quickLinks as placeholderQuickLinks,
   socialLinks,
   whatsOnItems,
 } from './_components/home/placeholderData'
@@ -40,12 +39,38 @@ export default async function HomePage() {
     firstName = docs[0]?.firstName ?? null
   }
 
+  // Edited in Payload (Globals → Quick links); placeholder list if it's empty
+  const quickLinksGlobal = await payload.findGlobal({ slug: 'quick-links', depth: 0 })
+  const quickLinks = quickLinksGlobal.items?.length
+    ? quickLinksGlobal.items.map(({ label, link, style }) => ({
+        label,
+        href: link,
+        variant: style === 'highlight' || style === 'dark' ? style : undefined,
+      }))
+    : placeholderQuickLinks
+
   const news = await payload.find({
     collection: 'news',
     where: { _status: { equals: 'published' } },
     sort: '-publishedDate',
     limit: 2,
     depth: 1,
+  })
+
+  const inspo = await payload.find({
+    collection: 'inspo',
+    where: { _status: { equals: 'published' } },
+    sort: '-publishedDate',
+    limit: 2,
+    depth: 1,
+  })
+
+  const kudos = await payload.find({
+    collection: 'kudos',
+    where: { _status: { equals: 'published' } },
+    sort: '-publishedDate',
+    limit: 1,
+    depth: 2,
   })
 
   const today = new Date().toLocaleDateString('en-GB', {
@@ -90,11 +115,15 @@ export default async function HomePage() {
 
             <section>
               <SectionHeader title="Inspo board" linkLabel="All inspo" href="/inspo-board" />
-              <div className="inspo-list">
-                {inspoItems.slice(0, 2).map((item, i) => (
-                  <InspoCard key={i} item={item} />
-                ))}
-              </div>
+              {inspo.docs.length === 0 ? (
+                <p className="dashboard__empty">No inspo posts yet. Add one in the admin panel.</p>
+              ) : (
+                <div className="inspo-list">
+                  {inspo.docs.map((doc) => (
+                    <InspoCard key={doc.id} item={toInspoItem(doc)} />
+                  ))}
+                </div>
+              )}
             </section>
 
             <CompanyObjective text={companyObjective} href="/resources#objectives" />
@@ -107,7 +136,11 @@ export default async function HomePage() {
 
             <section>
               <SectionHeader title="Kudos board" linkLabel="All kudos" href="/kudos-board" />
-              <KudosCard item={kudosItems[0]} />
+              {kudos.docs.length === 0 ? (
+                <p className="dashboard__empty">No kudos posts yet. Add one in the admin panel.</p>
+              ) : (
+                <KudosCard item={toKudosItem(kudos.docs[0])} />
+              )}
             </section>
 
             <section>

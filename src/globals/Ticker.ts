@@ -8,6 +8,7 @@ export const Ticker: GlobalConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Options',
     description: 'The scrolling banner at the top of the homepage.',
   },
   fields: [

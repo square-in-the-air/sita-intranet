@@ -7,7 +7,9 @@ export const birthdayMonths = [
 
 export const People: CollectionConfig = {
   slug: 'people',
+  labels: { singular: 'Employee', plural: 'Employees' },
   admin: {
+    group: 'Users',
     useAsTitle: 'name',
     defaultColumns: ['lastName', 'firstName', 'jobTitle', 'department', 'workEmail'],
   },
