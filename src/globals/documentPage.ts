@@ -6,10 +6,12 @@ type Options = {
   label: string
   // Where the page lives on the site, e.g. '/hr'
   path: string
+  // Adds an editable row of up to three numbered objectives above the sections
+  objectives?: boolean
 }
 
 // A page made of titled sections, each holding a list of documents (HR and Resources pages)
-export const buildDocumentPage = ({ slug, label, path }: Options): GlobalConfig => ({
+export const buildDocumentPage = ({ slug, label, path, objectives }: Options): GlobalConfig => ({
   slug,
   label,
   access: {
@@ -32,6 +34,55 @@ export const buildDocumentPage = ({ slug, label, path }: Options): GlobalConfig 
     ],
   },
   fields: [
+    ...(objectives
+      ? [
+          {
+            type: 'collapsible' as const,
+            label: 'Objectives',
+            admin: {
+              description:
+                'Up to three objectives shown side by side above the sections. They’re numbered 01, 02, 03 in the order they’re added.',
+            },
+            fields: [
+              {
+                type: 'row' as const,
+                fields: [
+                  {
+                    name: 'objectivesHeading',
+                    label: 'Heading',
+                    type: 'text' as const,
+                    defaultValue: 'Objectives',
+                    maxLength: 40,
+                    admin: { width: '50%' },
+                  },
+                  {
+                    name: 'objectivesLabel',
+                    label: 'Small label',
+                    type: 'text' as const,
+                    defaultValue: 'Where we’re heading',
+                    maxLength: 40,
+                    admin: { width: '50%', description: 'Optional. Shown to the right of the heading.' },
+                  },
+                ],
+              },
+              {
+                name: 'objectives',
+                type: 'array' as const,
+                labels: { singular: 'Objective', plural: 'Objectives' },
+                maxRows: 3,
+                admin: {
+                  initCollapsed: true,
+                  components: { RowLabel: '/globals/components/NumberRowLabel#NumberRowLabel' },
+                },
+                fields: [
+                  { name: 'title', type: 'text' as const, required: true, maxLength: 40 },
+                  { name: 'text', type: 'textarea' as const, required: true, maxLength: 200 },
+                ],
+              },
+            ],
+          },
+        ]
+      : []),
     {
       name: 'sections',
       type: 'array',

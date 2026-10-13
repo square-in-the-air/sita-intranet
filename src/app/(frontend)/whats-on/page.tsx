@@ -75,7 +75,7 @@ export default async function WhatsOnPage({
               <DateGroups
                 variant="cream"
                 groups={anniversaries}
-                formatLabel={(g) => `w/c ${formatDayMonth(g.day)}`}
+                formatLabel={(g) => formatDayMonth(g.day)}
                 empty="No work anniversaries this month."
               />
             </section>

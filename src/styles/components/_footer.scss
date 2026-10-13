@@ -1,6 +1,9 @@
 @use '../abstracts/variables' as *;
 
 .footer {
+  // Hidden for now. Remove this line to bring the footer back.
+  display: none;
+
   background: $color-ink;
   color: $color-white;
 

@@ -15,7 +15,6 @@ const DAY = 24 * 60 * 60 * 1000
 const DEMO_DOMAIN = '@demo.invalid'
 
 const departments = ['activation', 'creative', 'design', 'pr', 'social', 'video'] as const
-const monthValues = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 const iso = (ts: number) => new Date(ts + 12 * 60 * 60 * 1000).toISOString() // midday, like Payload day pickers
 
@@ -29,7 +28,7 @@ type DemoPerson = {
   first: string
   last: string
   dept: (typeof departments)[number]
-  birthdayDay?: number
+  birthday?: number
   startDate?: number
   newStarterIntro?: string
 }
@@ -39,12 +38,12 @@ const people: DemoPerson[] = [
   { first: 'Maya', last: 'Okafor', dept: 'video', startDate: todayTs + 3 * DAY, newStarterIntro: 'Joining the video team as a junior editor.' },
   { first: 'Jonah', last: 'Whitfield', dept: 'creative', startDate: todayTs + 10 * DAY },
   // Birthdays this month
-  { first: 'Priya', last: 'Nair', dept: 'design', birthdayDay: 3, startDate: inThisMonth(20, 6) },
-  { first: 'Callum', last: 'Reid', dept: 'social', birthdayDay: 3 },
-  { first: 'Imogen', last: 'Hart', dept: 'pr', birthdayDay: 14 },
-  { first: 'Tomasz', last: 'Kowalski', dept: 'activation', birthdayDay: 22 },
-  { first: 'Aisha', last: 'Bello', dept: 'creative', birthdayDay: 22 },
-  { first: 'Fergus', last: 'Doyle', dept: 'video', birthdayDay: 29 },
+  { first: 'Priya', last: 'Nair', dept: 'design', birthday: inThisMonth(3, 30), startDate: inThisMonth(20, 6) },
+  { first: 'Callum', last: 'Reid', dept: 'social', birthday: inThisMonth(3, 30) },
+  { first: 'Imogen', last: 'Hart', dept: 'pr', birthday: inThisMonth(14, 30) },
+  { first: 'Tomasz', last: 'Kowalski', dept: 'activation', birthday: inThisMonth(22, 30) },
+  { first: 'Aisha', last: 'Bello', dept: 'creative', birthday: inThisMonth(22, 30) },
+  { first: 'Fergus', last: 'Doyle', dept: 'video', birthday: inThisMonth(29, 30) },
   // Work anniversaries this month
   { first: 'Lena', last: 'Fischer', dept: 'design', startDate: inThisMonth(5, 1) },
   { first: 'Marcus', last: 'Bell', dept: 'activation', startDate: inThisMonth(7, 3) },
@@ -84,8 +83,7 @@ async function run() {
           department: p.dept,
           workEmail: `${p.first}.${p.last}${DEMO_DOMAIN}`.toLowerCase(),
           startDate: p.startDate ? iso(p.startDate) : undefined,
-          birthdayDay: p.birthdayDay,
-          birthdayMonth: p.birthdayDay ? (monthValues[month] as never) : undefined,
+          birthday: p.birthday ? iso(p.birthday) : undefined,
           newStarterIntro: p.newStarterIntro,
         },
       }),

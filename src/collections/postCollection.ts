@@ -80,6 +80,13 @@ export const buildPostCollection = ({
         description: `Auto-generated from the title. Used in the /${urlPath} URL.`,
       },
       hooks: {
+        // Duplicating a post gets its own slug, so several copies of one post don't clash
+        beforeDuplicate: [
+          ({ value }) =>
+            typeof value === 'string' && value
+              ? `${value}-copy-${Math.random().toString(36).slice(2, 6)}`
+              : undefined,
+        ],
         beforeValidate: [
           ({ value, data }) => {
             if (value) return formatSlug(value)

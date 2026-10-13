@@ -8,7 +8,7 @@ import { cache } from 'react'
 
 import config from '@/payload.config'
 import type { Event, Media, Person } from '@/payload-types'
-import { DAY, MONTHS, formatDayMonth, toDay, today, weekCommencing } from './dates'
+import { DAY, MONTHS, formatDayMonth, toDay, today } from './dates'
 import { departmentLabels } from './departments'
 
 // New starters show from 2 weeks before their first day until a week after
@@ -16,8 +16,6 @@ const NEW_STARTER_BEFORE = 14 * DAY
 const NEW_STARTER_AFTER = 7 * DAY
 // How far ahead the homepage box looks for birthdays and anniversaries
 const SUMMARY_WINDOW = 60 * DAY
-
-const MONTH_VALUES = MONTHS.map((m) => m.slice(0, 3).toLowerCase())
 
 const getClient = async () => getPayload({ config: await config })
 
@@ -129,9 +127,9 @@ type Occasion = { day: number; name: string; years?: number }
 
 function birthdaysIn(people: Person[], year: number): Occasion[] {
   return people.flatMap((p) => {
-    const month = p.birthdayMonth ? MONTH_VALUES.indexOf(p.birthdayMonth) : -1
-    if (month < 0 || !p.birthdayDay) return []
-    return [{ day: dayInYear(year, month, p.birthdayDay), name: p.name || p.firstName }]
+    if (!p.birthday) return []
+    const born = new Date(toDay(p.birthday))
+    return [{ day: dayInYear(year, born.getUTCMonth(), born.getUTCDate()), name: p.name || p.firstName }]
   })
 }
 
@@ -159,21 +157,17 @@ export async function getMonthCelebrations() {
   const now = new Date(today())
   const year = now.getUTCFullYear()
   const month = now.getUTCMonth()
-  const monthStart = Date.UTC(year, month, 1)
 
   const birthdays = new Map<number, DateGroup>()
   birthdaysIn(people, year)
     .filter((o) => inMonth(o.day, year, month))
     .forEach((o) => addToGroup(birthdays, o.day, o.name))
 
-  // Anniversaries are grouped by week commencing (never earlier than the 1st)
+  // Anniversaries are grouped by the exact day, with the number of years
   const anniversaries = new Map<number, DateGroup>()
   anniversariesIn(people, year)
     .filter((o) => inMonth(o.day, year, month))
-    .forEach((o) => {
-      const week = Math.max(weekCommencing(o.day), monthStart)
-      addToGroup(anniversaries, week, `${o.name} (${o.years}yr)`)
-    })
+    .forEach((o) => addToGroup(anniversaries, o.day, `${o.name} (${o.years}yr)`))
 
   return {
     monthName: MONTHS[month],

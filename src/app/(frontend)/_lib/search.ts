@@ -5,6 +5,7 @@
 import { getPayload, type Where } from 'payload'
 
 import config from '@/payload.config'
+import { quickLinks as placeholderQuickLinks } from '../_components/home/placeholderData'
 import { hubIndex } from '../_components/search/hubIndex'
 import { richTextToPlainText, truncate } from './excerpt'
 import { departmentLabels } from './departments'
@@ -73,8 +74,31 @@ export async function search(query: string): Promise<SearchResult[]> {
     }),
   ])
 
-  const hubResults = hubIndex.filter((item) =>
-    matches(q, item.title, item.summary, item.type, item.keywords),
+  // Quick links come from Payload (Options → Quick links), same as the homepage,
+  // and open the link they're set up with
+  const quickLinksGlobal = await payload.findGlobal({ slug: 'quick-links', depth: 0 })
+  const quickLinkItems = quickLinksGlobal.items?.length
+    ? quickLinksGlobal.items.map(({ label, link }) => ({ label, href: link }))
+    : placeholderQuickLinks.map(({ label, href }) => ({ label, href }))
+
+  const quickLinkResults: SearchResult[] = quickLinkItems
+    .filter((item) => matches(q, item.label, 'quick link'))
+    .map((item, i) => ({
+      id: `quick-link-${i}`,
+      section: 'company',
+      type: 'Quick link',
+      title: item.label,
+      summary: item.href === '#' ? '' : item.href,
+      href: item.href,
+      breadcrumb: ['Hub', 'Quick links', item.label],
+    }))
+
+  // A quick link replaces any placeholder index entry with the same name
+  const quickLinkTitles = new Set(quickLinkItems.map((item) => item.label.trim().toLowerCase()))
+  const hubResults = hubIndex.filter(
+    (item) =>
+      !quickLinkTitles.has(item.title.trim().toLowerCase()) &&
+      matches(q, item.title, item.summary, item.type, item.keywords),
   )
 
   const toResult = (
@@ -102,12 +126,12 @@ export async function search(query: string): Promise<SearchResult[]> {
     type: departmentLabels[person.department] ?? 'Person',
     title: person.name || `${person.firstName} ${person.lastName}`,
     summary: person.jobTitle,
-    href: `mailto:${person.workEmail}`,
+    href: person.workEmail ? `mailto:${person.workEmail}` : '#',
     breadcrumb: ['Hub', 'People', person.name || person.firstName],
   }))
 
   // Drop the matching-only keywords before returning
   const hub = hubResults.map(({ keywords: _keywords, ...result }) => result)
 
-  return [...hub, ...newsResults, ...peopleResults]
+  return [...quickLinkResults, ...hub, ...newsResults, ...peopleResults]
 }

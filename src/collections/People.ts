@@ -1,10 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-export const birthdayMonths = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-].map((label) => ({ label, value: label.slice(0, 3).toLowerCase() }))
-
 export const People: CollectionConfig = {
   slug: 'people',
   labels: { singular: 'Employee', plural: 'Employees' },
@@ -61,8 +56,11 @@ export const People: CollectionConfig = {
       required: true,
       options: [
         { label: 'Activation', value: 'activation' },
+        { label: 'B2B PR', value: 'b2b-pr' },
+        { label: 'Consumer PR', value: 'consumer-pr' },
         { label: 'Creative', value: 'creative' },
         { label: 'Design', value: 'design' },
+        { label: 'Management', value: 'management' },
         { label: 'PR', value: 'pr' },
         { label: 'Social', value: 'social' },
         { label: 'Video', value: 'video' },
@@ -71,8 +69,8 @@ export const People: CollectionConfig = {
     {
       name: 'workEmail',
       type: 'email',
-      required: true,
       unique: true,
+      admin: { description: 'Add when known. Used to match a login to this person and for the search result link.' },
     },
     {
       name: 'shortBio',
@@ -85,35 +83,24 @@ export const People: CollectionConfig = {
       name: 'startDate',
       type: 'date',
       admin: {
-        description: 'Drives the new starter box and work anniversaries on the What’s On page.',
+        description: 'Drives the new starter box and the month’s work anniversaries on the What’s On page.',
         date: {
           pickerAppearance: 'dayOnly',
+          displayFormat: 'd MMM yyyy',
         },
       },
     },
     {
-      // Day + month only, so we never store anyone's birth year
-      type: 'row',
-      fields: [
-        {
-          name: 'birthdayDay',
-          label: 'Birthday (day)',
-          type: 'number',
-          min: 1,
-          max: 31,
-          admin: { width: '50%' },
+      name: 'birthday',
+      type: 'date',
+      admin: {
+        description:
+          'Pick the year, month and day. Shows in the month’s birthdays on the What’s On page. Leave blank if they’d rather it wasn’t shown.',
+        date: {
+          pickerAppearance: 'dayOnly',
+          displayFormat: 'd MMM yyyy',
         },
-        {
-          name: 'birthdayMonth',
-          label: 'Birthday (month)',
-          type: 'select',
-          options: birthdayMonths,
-          admin: {
-            width: '50%',
-            description: 'Leave blank if they’d rather it wasn’t shown on the What’s On page.',
-          },
-        },
-      ],
+      },
     },
     {
       type: 'collapsible',
