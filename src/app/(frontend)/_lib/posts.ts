@@ -22,7 +22,8 @@ export const toInspoItem = (doc: Inspo): InspoItem => ({
   text: previewText(doc),
   author: personName(doc.author) ?? undefined,
   image: media(doc.heroImage)?.url ?? undefined,
-  href: doc.slug ? `/inspo-board/${doc.slug}` : '/inspo-board',
+  // Inspo cards have no page of their own: they go to the link set in the admin
+  href: doc.link || undefined,
 })
 
 // "26 Nov"
@@ -41,10 +42,18 @@ const initialsFromTitle = (title: string) =>
     .filter(Boolean)
 
 export const toKudosItem = (doc: Kudos): KudosItem => {
-  const people = initialsFromTitle(doc.title).map((initials) => ({ initials }))
+  // One square per image in the post, falling back to initials from the title
+  const photos = (doc.gallery ?? []).flatMap(({ image }) => {
+    const url = media(image)?.url
+    return url ? [url] : []
+  })
+  const people = photos.length
+    ? photos.map((image, i) => ({ initials: String(i), image }))
+    : initialsFromTitle(doc.title).map((initials) => ({ initials }))
 
   return {
-    image: media(doc.heroImage)?.url ?? undefined,
+    // First of the post's images
+    image: media(doc.gallery?.[0]?.image)?.url ?? undefined,
     names: doc.title,
     date: formatKudosDate(doc.publishedDate),
     message: previewText(doc),

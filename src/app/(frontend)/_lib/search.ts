@@ -134,7 +134,12 @@ export async function search(query: string): Promise<SearchResult[]> {
 
   const newsResults = [
     ...news.docs.map((doc) => toResult(doc, { id: 'news', type: 'News', path: 'news' })),
-    ...inspo.docs.map((doc) => toResult(doc, { id: 'inspo', type: 'Inspo board', path: 'inspo-board' })),
+    // Inspo posts have no page of their own, so results go straight to their link
+    ...inspo.docs.map((doc) => ({
+      ...toResult(doc, { id: 'inspo', type: 'Inspo board', path: 'inspo-board' }),
+      href: doc.link || '/inspo-board',
+      action: 'see-more' as const,
+    })),
     ...kudos.docs.map((doc) => toResult(doc, { id: 'kudos', type: 'Kudos board', path: 'kudos-board' })),
   ]
 

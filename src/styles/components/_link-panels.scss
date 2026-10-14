@@ -68,7 +68,7 @@
     justify-content: space-between;
     gap: 16px;
     min-height: 56px;
-    padding: 14px 20px 14px 24px;
+    padding: 14px $arrow-inset 14px 24px;
     background: $color-white;
     color: $color-ink;
     font-family: $font-display;

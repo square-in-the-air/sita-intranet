@@ -28,6 +28,18 @@
     @include xs {
       aspect-ratio: auto;
     }
+
+    // Several images share the panel equally (Kudos board)
+    &--split {
+      display: flex;
+      gap: 2px;
+
+      img {
+        flex: 1 1 0;
+        min-width: 0;
+        width: auto;
+      }
+    }
   }
 
   // Home page cards keep the smaller title (large board cards use the shared size)

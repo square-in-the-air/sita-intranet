@@ -5,6 +5,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  // Same height whether or not there are social buttons, so side-by-side
+  // sections (News feed / Quick links) line up
+  min-height: 28px;
   margin-bottom: 20px;
 
   &__title {

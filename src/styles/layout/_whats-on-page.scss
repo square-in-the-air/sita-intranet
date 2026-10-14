@@ -118,8 +118,8 @@
 
   &__arrow {
     position: absolute;
-    top: 26px;
-    right: 26px;
+    top: $arrow-inset;
+    right: $arrow-inset;
     width: 14px;
     height: 14px;
   }

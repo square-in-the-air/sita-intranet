@@ -85,6 +85,17 @@
       height: 100%;
       object-fit: cover;
     }
+
+    // Several images share the hero area equally
+    &--split {
+      display: flex;
+
+      img {
+        flex: 1 1 0;
+        min-width: 0;
+        width: auto;
+      }
+    }
   }
 
   &__content {
@@ -101,6 +112,10 @@
 
     > * {
       max-width: 760px;
+    }
+
+    > .article__gallery {
+      max-width: none;
     }
   }
 

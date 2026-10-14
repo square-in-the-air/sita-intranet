@@ -1,8 +1,9 @@
 import Link from 'next/link'
 
 import { richTextToPlainText, truncate } from '../../_lib/excerpt'
+import { POST_PLACEHOLDER_IMAGE } from '../../_lib/placeholders'
 import { formatArticleDate } from '../Article'
-import { ReadMoreIcon } from '../icons'
+import { ArrowIcon } from '../icons'
 
 type MediaRef = string | number | { url?: string | null; alt?: string | null } | null | undefined
 type PersonRef =
@@ -48,13 +49,11 @@ export function FeedCard({ item, size = 'default' }: Props) {
       className={`feed-card${isLarge ? ' feed-card--large' : ''}`}
       aria-label={item.title}
     >
-      {/* Large cards always show the image panel, grey until an image is added */}
+      {/* Large cards (News page) always show an image, falling back to the placeholder */}
       {(image?.url || isLarge) && (
         <div className="feed-card__image">
-          {image?.url && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={image.url} alt={image.alt || ''} />
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={image?.url || POST_PLACEHOLDER_IMAGE} alt={image?.url ? image.alt || '' : ''} />
         </div>
       )}
       <div className="feed-card__body">
@@ -67,12 +66,7 @@ export function FeedCard({ item, size = 'default' }: Props) {
         )}
         <h3 className="feed-card__title">{item.title}</h3>
         {preview && <p className="feed-card__excerpt">{preview}</p>}
-        <span className="feed-card__more" aria-hidden="true">
-          Read more
-          <span className="feed-card__more-icon">
-            <ReadMoreIcon />
-          </span>
-        </span>
+        <ArrowIcon className="feed-card__arrow" />
       </div>
     </Link>
   )

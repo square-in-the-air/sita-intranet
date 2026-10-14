@@ -17,6 +17,8 @@ type Options = {
   authorDescription: string
   // Extra fields placed after the title
   extraFields?: Field[]
+  // Set false for posts that use their own images field instead of a single hero image
+  heroImage?: boolean
 }
 
 // Shared setup for post types (News, Inspo board, Kudos board) so they all behave the same:
@@ -29,6 +31,7 @@ export const buildPostCollection = ({
   titleDescription,
   authorDescription,
   extraFields = [],
+  heroImage = true,
 }: Options): CollectionConfig => ({
   slug,
   ...(labels ? { labels } : {}),
@@ -94,11 +97,15 @@ export const buildPostCollection = ({
         ],
       },
     },
-    {
-      name: 'heroImage',
-      type: 'upload',
-      relationTo: 'media',
-    },
+    ...(heroImage
+      ? [
+          {
+            name: 'heroImage',
+            type: 'upload' as const,
+            relationTo: 'media' as const,
+          },
+        ]
+      : []),
     {
       name: 'content',
       type: 'richText',

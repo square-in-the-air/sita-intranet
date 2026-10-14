@@ -255,15 +255,10 @@
   // Same arrow as the quick links, in the top-right corner
   &__arrow {
     position: absolute;
-    top: 24px;
-    right: 24px;
+    top: $arrow-inset;
+    right: $arrow-inset;
     width: 14px;
     height: 14px;
-
-    @include md {
-      top: 28px;
-      right: 30px;
-    }
   }
 }
 

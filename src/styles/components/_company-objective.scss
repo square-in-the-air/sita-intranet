@@ -5,6 +5,7 @@
 
 .company-objective {
   @include card.box-padding;
+  position: relative;
   display: block;
   background: $color-mint-light;
   color: $color-ink;
@@ -21,7 +22,8 @@
 
   &__title {
     max-width: 30em;
-    margin: 0 0 20px;
+    padding-right: 28px; // clear of the arrow
+    margin: 0;
     font-family: $font-display;
     font-weight: 400;
     font-size: calc(20px * var(--fs-scale));
@@ -34,35 +36,12 @@
     }
   }
 
-  &__more {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    font-size: calc(var(--body-size) * 0.9 * var(--fs-scale));
-    line-height: 1;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-
-  &__icon {
-    display: grid;
-    place-items: center;
-    width: 22px;
-    height: 22px;
-    background: $color-yellow;
-    color: $color-ink;
-    transition:
-      background 0.15s ease,
-      color 0.15s ease;
-
-    svg {
-      width: 8px;
-      height: 8px;
-    }
-  }
-
-  &:hover &__icon {
-    background: $color-ink;
-    color: $color-yellow;
+  // Same arrow as the cards, top-right corner
+  &__arrow {
+    position: absolute;
+    top: $arrow-inset;
+    right: $arrow-inset;
+    width: 14px;
+    height: 14px;
   }
 }

@@ -10,6 +10,8 @@ type Props = {
   // Already formatted, e.g. "23.07.25"
   date?: string | null
   image?: { url?: string | null; alt?: string | null } | null
+  // Extra images: with these, the hero area is split equally between all the images
+  gallery?: { url?: string | null; alt?: string | null }[]
   backHref: string
   // Shown on the button at the bottom, e.g. "Back to news"
   backLabel?: string
@@ -38,7 +40,10 @@ function Title({ text }: { text: string }) {
 }
 
 // Shared single-article template for News, Inspo board and Kudos board posts
-export function Article({ title, author, date, image, backHref, backLabel = 'Back', children }: Props) {
+export function Article({ title, author, date, image, gallery = [], backHref, backLabel = 'Back', children }: Props) {
+  // The hero image first, then any extra images, all shown side by side in the hero area
+  const heroImages = [image, ...gallery].filter((img): img is { url: string; alt?: string | null } => Boolean(img?.url))
+
   return (
     <article className="article">
       <header className="article__header container">
@@ -55,10 +60,12 @@ export function Article({ title, author, date, image, backHref, backLabel = 'Bac
         </Link>
       </header>
 
-      {image?.url && (
-        <div className="article__image">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={image.url} alt={image.alt || ''} />
+      {heroImages.length > 0 && (
+        <div className={`article__image${heroImages.length > 1 ? ' article__image--split' : ''}`}>
+          {heroImages.map((img, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img key={i} src={img.url ?? ''} alt={img.alt || ''} />
+          ))}
         </div>
       )}
 
