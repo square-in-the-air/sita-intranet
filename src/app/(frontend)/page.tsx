@@ -163,6 +163,7 @@ export default async function HomePage() {
                 href={`mailto:${itProblem.email}?subject=${encodeURIComponent('IT problem')}`}
                 title={itProblem.title}
                 text={itProblem.text}
+                variant="orange"
               />
             </section>
           </aside>

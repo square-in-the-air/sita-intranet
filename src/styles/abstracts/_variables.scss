@@ -29,6 +29,9 @@ $color-coral: #ff5a36;
 $font-display: var(--font-display), 'Arial Narrow', sans-serif;
 $font-body: var(--font-body), system-ui, sans-serif;
 
+// Distance every arrow sits from the edge of its card, row or button
+$arrow-inset: 20px;
+
 // Radius
 $radius-sm: 4px;
 $radius-md: 8px;

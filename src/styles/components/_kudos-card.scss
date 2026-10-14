@@ -3,7 +3,7 @@
 .kudos-card {
   position: relative;
   display: block;
-  padding: 22px 22px 54px;
+  padding: 22px;
   background: $color-cream;
   color: inherit;
   text-decoration: none;
@@ -43,6 +43,7 @@
     justify-content: space-between;
     gap: 12px;
     margin-bottom: 8px;
+    padding-right: 28px; // clear of the arrow
   }
 
   &__names {
@@ -68,40 +69,14 @@
     line-height: calc(var(--body-lh) * var(--fs-scale));
   }
 
-  // Same "Read more" as the other cards, flush to the bottom-right corner
-  &__more {
+  // Same arrow as the quick links, top-right corner
+  &__arrow {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-size: calc(var(--body-size) * 0.8 * var(--fs-scale));
-    line-height: 1;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-
-  &__more-icon {
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    background: $color-yellow;
+    top: $arrow-inset;
+    right: $arrow-inset;
+    width: 14px;
+    height: 14px;
     color: $color-ink;
-    transition:
-      background 0.15s ease,
-      color 0.15s ease;
-
-    svg {
-      width: 9px;
-      height: 9px;
-    }
-  }
-
-  &:is(a):hover &__more-icon {
-    background: $color-ink;
-    color: $color-yellow;
   }
 }
 

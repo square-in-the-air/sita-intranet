@@ -7,8 +7,8 @@
   &__link {
     display: grid;
     place-items: center;
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     border: 1px solid $color-ink;
     color: $color-ink;
     transition:
@@ -16,8 +16,8 @@
       color 0.15s ease;
 
     svg {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
     }
 
     &:hover {
@@ -41,7 +41,7 @@
     justify-content: space-between;
     gap: 16px;
     min-height: 48px;
-    padding: 8px 12px 8px 19px;
+    padding: 8px $arrow-inset 8px 19px;
     background: $color-mint-light;
     color: $color-ink;
     font-family: $font-display;

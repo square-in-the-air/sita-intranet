@@ -15,7 +15,7 @@ const getArticle = async (slug: string) => {
       _status: { equals: 'published' },
     },
     limit: 1,
-    depth: 1,
+    depth: 2,
   })
   return result.docs[0] ?? null
 }
@@ -29,15 +29,18 @@ export default async function KudosArticlePage({ params }: { params: Promise<{ s
   const article = await getArticle((await params).slug)
   if (!article) notFound()
 
-  const image = article.heroImage && typeof article.heroImage === 'object' ? article.heroImage : null
   const author = article.author && typeof article.author === 'object' ? article.author.name : null
+
+  const gallery = (article.gallery ?? []).flatMap(({ image: img }) =>
+    img && typeof img === 'object' && img.url ? [img] : [],
+  )
 
   return (
     <Article
       title={article.title}
       author={author}
       date={formatArticleDate(article.publishedDate)}
-      image={image}
+      gallery={gallery}
       backHref="/kudos-board"
       backLabel="Back to kudos board"
     >

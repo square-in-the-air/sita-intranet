@@ -276,6 +276,10 @@ export interface Inspo {
   id: number;
   title: string;
   /**
+   * Where the card goes when it’s clicked. A full URL (https://…) opens in a new tab, or use a Hub page such as /resources. Inspo posts don’t have a page of their own.
+   */
+  link: string;
+  /**
    * Shown above the title on the cards.
    */
   author?: (number | null) | Person;
@@ -313,6 +317,15 @@ export interface Kudos {
   id: number;
   title: string;
   /**
+   * The top of the post page is split equally between these images. The first one is used on the cards.
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Shown above the title on the cards.
    */
   author?: (number | null) | Person;
@@ -320,7 +333,6 @@ export interface Kudos {
    * Auto-generated from the title. Used in the /kudos-board URL.
    */
   slug?: string | null;
-  heroImage?: (number | null) | Media;
   content?: {
     root: {
       type: string;
@@ -497,6 +509,7 @@ export interface NewsSelect<T extends boolean = true> {
  */
 export interface InspoSelect<T extends boolean = true> {
   title?: T;
+  link?: T;
   author?: T;
   slug?: T;
   heroImage?: T;
@@ -513,9 +526,14 @@ export interface InspoSelect<T extends boolean = true> {
  */
 export interface KudosSelect<T extends boolean = true> {
   title?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   author?: T;
   slug?: T;
-  heroImage?: T;
   content?: T;
   department?: T;
   publishedDate?: T;

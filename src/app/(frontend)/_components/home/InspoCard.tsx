@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import React from 'react'
 
-import { EXCERPT_LENGTH, truncate } from '../../_lib/excerpt'
+import { truncate } from '../../_lib/excerpt'
 import { POST_PLACEHOLDER_IMAGE } from '../../_lib/placeholders'
-import { ReadMoreIcon } from '../icons'
+import { ArrowIcon } from '../icons'
 
 export type InspoItem = {
   title: string
@@ -30,19 +30,20 @@ export function InspoCard({ item, size = 'default' }: Props) {
       <div className="inspo-card__body">
         {item.author && <p className="inspo-card__author">{item.author}</p>}
         <h3 className="inspo-card__title">{item.title}</h3>
-        <p className="inspo-card__text">{truncate(item.text, size === 'large' ? EXCERPT_LENGTH : 90)}</p>
-        <span className="inspo-card__more" aria-hidden="true">
-          Read more
-          <span className="inspo-card__more-icon">
-            <ReadMoreIcon />
-          </span>
-        </span>
+        {/* The board page shows the full text; the homepage keeps a short preview */}
+        <p className="inspo-card__text">{size === 'large' ? item.text : truncate(item.text, 90)}</p>
+        <ArrowIcon className="inspo-card__arrow" />
       </div>
     </>
   )
 
   return item.href ? (
-    <Link href={item.href} className={className} aria-label={item.title}>
+    <Link
+      href={item.href}
+      className={className}
+      aria-label={item.title}
+      {...(/^https?:\/\//.test(item.href) ? { target: '_blank', rel: 'noreferrer' } : {})}
+    >
       {content}
     </Link>
   ) : (

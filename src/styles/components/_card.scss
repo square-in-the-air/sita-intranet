@@ -1,7 +1,7 @@
 @use '../abstracts/variables' as *;
 
 // Shared styles for the content cards (.feed-card, .inspo-card).
-// Both cards include these so the body, text and "Read more" always match.
+// Both cards include these so the body, text and arrow always match.
 // Each card file only adds its background and default layout.
 
 // Padding used by the card body, and by the objective + link panel boxes so they match.
@@ -52,11 +52,6 @@
     justify-content: center;
   }
 
-  &__body:hover &__more-icon {
-    background: $color-ink;
-    color: $color-yellow;
-  }
-
   &__author {
     margin: 0 0 15px;
     font-size: calc(13px * var(--fs-scale));
@@ -74,6 +69,7 @@
 
   &__title {
     margin: 0 0 15px;
+    padding-right: 28px; // clear of the arrow
     font-family: $font-display;
     font-weight: 400;
     font-size: calc(28px * var(--fs-scale));
@@ -88,41 +84,19 @@
 
   &__excerpt,
   &__text {
-    // Keeps at least 1rem between the text and the absolutely positioned "Read more"
-    margin: 0 0 1rem;
+    margin: 0;
     font-size: calc(var(--body-size) * var(--fs-scale));
     line-height: calc(var(--body-lh) * var(--fs-scale));
   }
 
-  // "Read more" is pinned flush to the card's bottom-right corner, outside the flow
-  &__more {
+  // Same arrow as the quick links, pinned to the top-right corner of the body
+  &__arrow {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-size: calc(var(--body-size) * 0.8 * var(--fs-scale));
-    line-height: 1;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-
-  &__more-icon {
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    background: $color-yellow;
+    top: $arrow-inset;
+    right: $arrow-inset;
+    width: 14px;
+    height: 14px;
     color: $color-ink;
-    transition:
-      background 0.15s ease,
-      color 0.15s ease;
-
-    svg {
-      width: 9px;
-      height: 9px;
-    }
   }
 }
 
