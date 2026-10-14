@@ -30,7 +30,10 @@ export default buildConfig({
     user: Users.slug,
     components: {
       Nav: '/components/OrderedNav#OrderedNav',
-      beforeNavLinks: ['/components/DashboardLink#DashboardLink'],
+      beforeNavLinks: [
+        '/components/SidebarLogo#SidebarLogo',
+        '/components/DashboardLink#DashboardLink',
+      ],
     },
     dashboard: {
       widgets: [

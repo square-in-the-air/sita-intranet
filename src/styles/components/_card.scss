@@ -66,6 +66,12 @@
     text-transform: uppercase;
   }
 
+  // Date sits next to the author, a little lighter
+  &__date,
+  &__author-sep {
+    font-weight: 400;
+  }
+
   &__title {
     margin: 0 0 15px;
     font-family: $font-display;
@@ -95,8 +101,8 @@
     bottom: 0;
     display: inline-flex;
     align-items: center;
-    gap: 14px;
-    font-size: calc(var(--body-size) * 0.9 * var(--fs-scale));
+    gap: 12px;
+    font-size: calc(var(--body-size) * 0.8 * var(--fs-scale));
     line-height: 1;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -105,8 +111,8 @@
   &__more-icon {
     display: grid;
     place-items: center;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     background: $color-yellow;
     color: $color-ink;
     transition:
@@ -114,8 +120,8 @@
       color 0.15s ease;
 
     svg {
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
     }
   }
 }

@@ -15,7 +15,6 @@ type Options = {
   group: string
   titleDescription?: string
   authorDescription: string
-  excerptDescription: string
   // Extra fields placed after the title
   extraFields?: Field[]
 }
@@ -29,7 +28,6 @@ export const buildPostCollection = ({
   group,
   titleDescription,
   authorDescription,
-  excerptDescription,
   extraFields = [],
 }: Options): CollectionConfig => ({
   slug,
@@ -94,13 +92,6 @@ export const buildPostCollection = ({
             return value
           },
         ],
-      },
-    },
-    {
-      name: 'excerpt',
-      type: 'textarea',
-      admin: {
-        description: excerptDescription,
       },
     },
     {

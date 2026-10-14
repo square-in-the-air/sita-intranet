@@ -51,6 +51,14 @@ const toEventItem = (event: Event): EventItem => ({
   description: event.description ?? null,
 })
 
+// TBC events are dated somewhere in their month, so they stay upcoming until the month is over
+const isUpcoming = (e: EventItem) => {
+  const now = today()
+  if (!e.dayTBC) return e.day >= now
+  const d = new Date(e.day)
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1) > now
+}
+
 export async function getUpcomingEvents(limit: number) {
   const payload = await getClient()
   const result = await payload.find({
@@ -62,14 +70,27 @@ export async function getUpcomingEvents(limit: number) {
     depth: 1,
   })
 
-  const now = today()
-  const upcoming = result.docs.map(toEventItem).filter((e) => {
-    if (!e.dayTBC) return e.day >= now
-    const d = new Date(e.day)
-    return Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1) > now
-  })
+  const upcoming = result.docs.map(toEventItem).filter(isUpcoming)
 
   return { events: upcoming.slice(0, limit), hasMore: upcoming.length > limit }
+}
+
+// Events that have already happened, most recent first
+export async function getPastEvents(limit = 20) {
+  const payload = await getClient()
+  const result = await payload.find({
+    collection: 'events',
+    // Anything that could be past: TBC events dated up to a month ahead may already be over
+    where: { date: { less_than: new Date(today() + 31 * DAY).toISOString() } },
+    sort: '-date',
+    limit: 100,
+    depth: 1,
+  })
+
+  return result.docs
+    .map(toEventItem)
+    .filter((e) => !isUpcoming(e))
+    .slice(0, limit)
 }
 
 /* ---------- New starters ---------- */

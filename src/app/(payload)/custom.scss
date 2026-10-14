@@ -127,4 +127,31 @@ h1,
     padding: 0;
     list-style: none;
   }
+
+  // The Options group sits on a white panel
+  &__group--options {
+    padding: calc(var(--base) * 1.5);
+    background: #fff;
+  }
+}
+
+// Logo in the sidebar (the dark alternative logo from Globals → Logo)
+.admin-logo {
+  display: flex;
+  align-items: center;
+
+  img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  &--sidebar {
+    margin-bottom: var(--base);
+
+    img {
+      height: calc(var(--base) * 2);
+    }
+  }
 }

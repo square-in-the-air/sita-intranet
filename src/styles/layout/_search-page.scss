@@ -161,6 +161,7 @@
 }
 
 .search-result {
+  position: relative;
   display: block;
   padding: 24px 24px 26px;
   background: $color-mint-light;
@@ -224,7 +225,9 @@
   }
 
   &__title {
+    // Keeps long titles clear of the arrow in the corner
     margin: 0 0 10px;
+    padding-right: 36px;
     font-family: $font-display;
     font-weight: 400;
     font-size: calc(20px * var(--fs-scale));
@@ -247,6 +250,20 @@
     margin: 0;
     font-size: calc(10px * var(--fs-scale));
     line-height: 1.4;
+  }
+
+  // Same arrow as the quick links, in the top-right corner
+  &__arrow {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 14px;
+    height: 14px;
+
+    @include md {
+      top: 28px;
+      right: 30px;
+    }
   }
 }
 

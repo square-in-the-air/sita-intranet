@@ -24,6 +24,7 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { NavRowLabel as NavRowLabel_8f809bf76dd18417aa05158faf712d72 } from '../../../globals/components/NavRowLabel'
 import { NumberRowLabel as NumberRowLabel_b7aeaf5513b18ec9f6a2b0fdbd5a4b22 } from '../../../globals/components/NumberRowLabel'
 import { OrderedNav as OrderedNav_5aceb1f3548cd10a4004a9e9c332146c } from '../../../components/OrderedNav'
+import { SidebarLogo as SidebarLogo_3f15fbd92be2c91e4a0bf602ad604a7b } from '../../../components/SidebarLogo'
 import { DashboardLink as DashboardLink_e35752d6c2f98686ddb648afdb472258 } from '../../../components/DashboardLink'
 import { OrderedCollectionCards as OrderedCollectionCards_80d663ac5cce2652df7471e08b5e1f4a } from '../../../components/OrderedCollectionCards'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -57,6 +58,7 @@ export const importMap = {
   "/globals/components/NavRowLabel#NavRowLabel": NavRowLabel_8f809bf76dd18417aa05158faf712d72,
   "/globals/components/NumberRowLabel#NumberRowLabel": NumberRowLabel_b7aeaf5513b18ec9f6a2b0fdbd5a4b22,
   "/components/OrderedNav#OrderedNav": OrderedNav_5aceb1f3548cd10a4004a9e9c332146c,
+  "/components/SidebarLogo#SidebarLogo": SidebarLogo_3f15fbd92be2c91e4a0bf602ad604a7b,
   "/components/DashboardLink#DashboardLink": DashboardLink_e35752d6c2f98686ddb648afdb472258,
   "/components/OrderedCollectionCards#OrderedCollectionCards": OrderedCollectionCards_80d663ac5cce2652df7471e08b5e1f4a,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,

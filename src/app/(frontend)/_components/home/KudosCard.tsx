@@ -1,12 +1,15 @@
 import Link from 'next/link'
 
 import { truncate } from '../../_lib/excerpt'
+import { ReadMoreIcon } from '../icons'
 
 export type KudosItem = {
   names: string
   date: string
   message: string
   people: { initials: string; image?: string }[]
+  // Hero image, used on the board cards like the Inspo board
+  image?: string
   href?: string
 }
 
@@ -30,6 +33,12 @@ export function KudosCard({ item }: { item: KudosItem }) {
         <span className="kudos-card__date">{item.date}</span>
       </div>
       <p className="kudos-card__message">{truncate(item.message)}</p>
+      <span className="kudos-card__more" aria-hidden="true">
+        Read more
+        <span className="kudos-card__more-icon">
+          <ReadMoreIcon />
+        </span>
+      </span>
     </>
   )
 

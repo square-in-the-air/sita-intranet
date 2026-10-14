@@ -9,6 +9,7 @@ import { quickLinks as placeholderQuickLinks } from '../_components/home/placeho
 import { hubIndex } from '../_components/search/hubIndex'
 import { richTextToPlainText, truncate } from './excerpt'
 import { departmentLabels } from './departments'
+import { getPanels } from './getPanels'
 
 export type SearchSection = 'company' | 'hr' | 'finance' | 'health-safety' | 'people'
 
@@ -20,6 +21,8 @@ export type SearchResult = {
   summary: string
   href: string
   breadcrumb: string[]
+  // Label on the result's button: files say "View", posts say "Read more", everything else "See more"
+  action?: 'view' | 'read-more' | 'see-more'
 }
 
 // Filter tabs, in order. People only appears when there are people results.
@@ -49,10 +52,7 @@ export async function search(query: string): Promise<SearchResult[]> {
   const payload = await getPayload({ config: await config })
 
   const postWhere: Where = {
-    and: [
-      { _status: { equals: 'published' } },
-      { or: [{ title: { like: q } }, { excerpt: { like: q } }] },
-    ],
+    and: [{ _status: { equals: 'published' } }, { title: { like: q } }],
   }
   const postQuery = {
     where: postWhere,
@@ -61,7 +61,7 @@ export async function search(query: string): Promise<SearchResult[]> {
     depth: 0,
   }
 
-  const [news, inspo, kudos, people] = await Promise.all([
+  const [news, inspo, kudos, people, hrPanels, resourcePanels] = await Promise.all([
     payload.find({ collection: 'news', ...postQuery }),
     payload.find({ collection: 'inspo', ...postQuery }),
     payload.find({ collection: 'kudos', ...postQuery }),
@@ -72,6 +72,8 @@ export async function search(query: string): Promise<SearchResult[]> {
       limit: 20,
       depth: 0,
     }),
+    getPanels('hr'),
+    getPanels('resources'),
   ])
 
   // Quick links come from Payload (Options → Quick links), same as the homepage,
@@ -88,7 +90,7 @@ export async function search(query: string): Promise<SearchResult[]> {
       section: 'company',
       type: 'Quick link',
       title: item.label,
-      summary: item.href === '#' ? '' : item.href,
+      summary: '',
       href: item.href,
       breadcrumb: ['Hub', 'Quick links', item.label],
     }))
@@ -101,6 +103,30 @@ export async function search(query: string): Promise<SearchResult[]> {
       matches(q, item.title, item.summary, item.type, item.keywords),
   )
 
+  // Documents in the HR and Resources page boxes. Only the document name is
+  // searched, not the box title or intro text.
+  const panelResults = (
+    [
+      { id: 'hr', section: 'hr', name: 'HR', panels: hrPanels },
+      { id: 'resources', section: 'company', name: 'Resources', panels: resourcePanels },
+    ] as const
+  ).flatMap(({ id, section, name, panels }) =>
+    (panels ?? []).flatMap((panel, p) =>
+      panel.links
+        .filter((link) => matches(q, link.label))
+        .map((link, i): SearchResult => ({
+          id: `${id}-panel-${p}-${i}`,
+          section,
+          type: panel.title,
+          title: link.label,
+          summary: '',
+          href: link.href,
+          breadcrumb: ['Hub', name, panel.title, link.label],
+          action: link.newTab ? 'view' : 'see-more',
+        })),
+    ),
+  )
+
   const toResult = (
     doc: (typeof news.docs)[number],
     kind: { id: string; type: string; path: string },
@@ -109,9 +135,10 @@ export async function search(query: string): Promise<SearchResult[]> {
     section: 'company',
     type: kind.type,
     title: doc.title,
-    summary: truncate(doc.excerpt?.trim() || richTextToPlainText(doc.content), 140),
+    summary: truncate(richTextToPlainText(doc.content), 140),
     href: doc.slug ? `/${kind.path}/${doc.slug}` : `/${kind.path}`,
     breadcrumb: ['Hub', kind.type, doc.title],
+    action: 'read-more',
   })
 
   const newsResults = [
@@ -133,5 +160,5 @@ export async function search(query: string): Promise<SearchResult[]> {
   // Drop the matching-only keywords before returning
   const hub = hubResults.map(({ keywords: _keywords, ...result }) => result)
 
-  return [...quickLinkResults, ...hub, ...newsResults, ...peopleResults]
+  return [...quickLinkResults, ...panelResults, ...hub, ...newsResults, ...peopleResults]
 }

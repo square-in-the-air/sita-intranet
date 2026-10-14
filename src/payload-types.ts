@@ -165,7 +165,7 @@ export interface Event {
   dayToBeConfirmed?: boolean | null;
   organiser?: (number | null) | Person;
   /**
-   * Max 50 words.
+   * Write as much as you like. The What’s On cards only show the first 50 words.
    */
   description?: string | null;
   updatedAt: string;
@@ -246,10 +246,6 @@ export interface News {
    * Auto-generated from the title. Used in the /news URL.
    */
   slug?: string | null;
-  /**
-   * Short summary shown on news cards. Keep it to a sentence or two.
-   */
-  excerpt?: string | null;
   heroImage?: (number | null) | Media;
   content?: {
     root: {
@@ -280,17 +276,13 @@ export interface Inspo {
   id: number;
   title: string;
   /**
-   * Shown above the title on inspo cards.
+   * Shown above the title on the cards.
    */
   author?: (number | null) | Person;
   /**
    * Auto-generated from the title. Used in the /inspo-board URL.
    */
   slug?: string | null;
-  /**
-   * Short summary shown on inspo cards. Keep it to a sentence or two.
-   */
-  excerpt?: string | null;
   heroImage?: (number | null) | Media;
   content?: {
     root: {
@@ -319,26 +311,15 @@ export interface Inspo {
  */
 export interface Kudos {
   id: number;
-  /**
-   * Who the kudos is for, e.g. “Tom & Kiane”.
-   */
   title: string;
   /**
-   * Their photos (or initials) are shown on the kudos card.
-   */
-  recipients?: (number | Person)[] | null;
-  /**
-   * Who is giving the kudos.
+   * Shown above the title on the cards.
    */
   author?: (number | null) | Person;
   /**
    * Auto-generated from the title. Used in the /kudos-board URL.
    */
   slug?: string | null;
-  /**
-   * The kudos message shown on the cards. Keep it to a sentence or two.
-   */
-  excerpt?: string | null;
   heroImage?: (number | null) | Media;
   content?: {
     root: {
@@ -502,7 +483,6 @@ export interface NewsSelect<T extends boolean = true> {
   title?: T;
   author?: T;
   slug?: T;
-  excerpt?: T;
   heroImage?: T;
   content?: T;
   department?: T;
@@ -519,7 +499,6 @@ export interface InspoSelect<T extends boolean = true> {
   title?: T;
   author?: T;
   slug?: T;
-  excerpt?: T;
   heroImage?: T;
   content?: T;
   department?: T;
@@ -534,10 +513,8 @@ export interface InspoSelect<T extends boolean = true> {
  */
 export interface KudosSelect<T extends boolean = true> {
   title?: T;
-  recipients?: T;
   author?: T;
   slug?: T;
-  excerpt?: T;
   heroImage?: T;
   content?: T;
   department?: T;
@@ -737,7 +714,7 @@ export interface Resource {
   createdAt?: string | null;
 }
 /**
- * The logo in the site header and footer. Pick or upload a new image, then save.
+ * The logo in the site header and footer, plus a separate dark version for the admin panel. Pick or upload a new image, then save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "logo".
@@ -748,6 +725,10 @@ export interface Logo {
    * Use a light-coloured SVG or PNG with a transparent background.
    */
   image: number | Media;
+  /**
+   * Shown in the admin sidebar and dashboard, which have a light background. Use a dark-coloured SVG or PNG with a transparent background. Leave empty to use SITA_Primary_Dark.svg.
+   */
+  adminImage?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -929,6 +910,7 @@ export interface ResourcesSelect<T extends boolean = true> {
  */
 export interface LogoSelect<T extends boolean = true> {
   image?: T;
+  adminImage?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

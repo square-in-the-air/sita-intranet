@@ -14,9 +14,8 @@ const personName = (person: unknown) => {
   return p.name || `${p.firstName ?? ''} ${p.lastName ?? ''}`.trim() || null
 }
 
-// Preview comes from the post content, falling back to the excerpt field
-const previewText = (doc: { content?: unknown; excerpt?: string | null }) =>
-  richTextToPlainText(doc.content) || doc.excerpt?.trim() || ''
+// Preview comes from the post content
+const previewText = (doc: { content?: unknown }) => richTextToPlainText(doc.content)
 
 export const toInspoItem = (doc: Inspo): InspoItem => ({
   title: doc.title,
@@ -34,7 +33,7 @@ export const formatKudosDate = (value: string) =>
     timeZone: 'Europe/London',
   })
 
-// Without picked recipients, fall back to initials from the title ("Tom & Kiane" → T, K)
+// Initials from the title ("Tom & Kiane" → T, K)
 const initialsFromTitle = (title: string) =>
   title
     .split(/\s*(?:&|,|\band\b)\s*/i)
@@ -42,18 +41,10 @@ const initialsFromTitle = (title: string) =>
     .filter(Boolean)
 
 export const toKudosItem = (doc: Kudos): KudosItem => {
-  const recipients = (doc.recipients ?? []).filter(
-    (r): r is Person => typeof r === 'object' && r !== null,
-  )
-
-  const people = recipients.length
-    ? recipients.map((person) => ({
-        initials: (person.firstName?.charAt(0) ?? '?').toUpperCase(),
-        image: media(person.headshot)?.url ?? undefined,
-      }))
-    : initialsFromTitle(doc.title).map((initials) => ({ initials }))
+  const people = initialsFromTitle(doc.title).map((initials) => ({ initials }))
 
   return {
+    image: media(doc.heroImage)?.url ?? undefined,
     names: doc.title,
     date: formatKudosDate(doc.publishedDate),
     message: previewText(doc),

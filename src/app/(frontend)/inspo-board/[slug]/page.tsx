@@ -38,8 +38,8 @@ export default async function InspoArticlePage({ params }: { params: Promise<{ s
       author={author}
       date={formatArticleDate(article.publishedDate)}
       image={image}
-      lead={article.excerpt}
       backHref="/inspo-board"
+      backLabel="Back to inspo board"
     >
       {article.content && <RichText data={article.content} />}
     </Article>
