@@ -1,4 +1,4 @@
-// Site search used by /search. Searches the Hub pages/forms index, published
+// Site search used by /search. Searches quick links, HR/Resources documents, published
 // news and the People directory, and tags each result with a section so the
 // results page can filter by Company / HR / Finance / Health & Safety.
 
@@ -6,7 +6,6 @@ import { getPayload, type Where } from 'payload'
 
 import config from '@/payload.config'
 import { quickLinks as placeholderQuickLinks } from '../_components/home/placeholderData'
-import { hubIndex } from '../_components/search/hubIndex'
 import { richTextToPlainText, truncate } from './excerpt'
 import { departmentLabels } from './departments'
 import { getPanels } from './getPanels'
@@ -95,14 +94,6 @@ export async function search(query: string): Promise<SearchResult[]> {
       breadcrumb: ['Hub', 'Quick links', item.label],
     }))
 
-  // A quick link replaces any placeholder index entry with the same name
-  const quickLinkTitles = new Set(quickLinkItems.map((item) => item.label.trim().toLowerCase()))
-  const hubResults = hubIndex.filter(
-    (item) =>
-      !quickLinkTitles.has(item.title.trim().toLowerCase()) &&
-      matches(q, item.title, item.summary, item.type, item.keywords),
-  )
-
   // Documents in the HR and Resources page boxes. Only the document name is
   // searched, not the box title or intro text.
   const panelResults = (
@@ -157,8 +148,5 @@ export async function search(query: string): Promise<SearchResult[]> {
     breadcrumb: ['Hub', 'People', person.name || person.firstName],
   }))
 
-  // Drop the matching-only keywords before returning
-  const hub = hubResults.map(({ keywords: _keywords, ...result }) => result)
-
-  return [...quickLinkResults, ...panelResults, ...hub, ...newsResults, ...peopleResults]
+  return [...quickLinkResults, ...panelResults, ...newsResults, ...peopleResults]
 }
