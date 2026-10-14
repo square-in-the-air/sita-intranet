@@ -19,6 +19,8 @@ import { HR } from './globals/HR'
 import { Resources } from './globals/Resources'
 import { Logo } from './globals/Logo'
 import { QuickLinks } from './globals/QuickLinks'
+import { Callouts } from './globals/Callouts'
+import { SocialLinks } from './globals/SocialLinks'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,7 +30,10 @@ export default buildConfig({
     user: Users.slug,
     components: {
       Nav: '/components/OrderedNav#OrderedNav',
-      beforeNavLinks: ['/components/DashboardLink#DashboardLink'],
+      beforeNavLinks: [
+        '/components/SidebarLogo#SidebarLogo',
+        '/components/DashboardLink#DashboardLink',
+      ],
     },
     dashboard: {
       widgets: [
@@ -45,7 +50,7 @@ export default buildConfig({
     },
   },
   collections: [Events, News, Inspo, Kudos, Users, Media, People],
-  globals: [HR, Resources, Logo, Navigation, QuickLinks, Ticker],
+  globals: [HR, Resources, Logo, Navigation, QuickLinks, SocialLinks, Ticker, Callouts],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

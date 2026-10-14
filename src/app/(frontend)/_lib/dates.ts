@@ -39,9 +39,3 @@ export function formatDayMonth(day: number, dayTBC = false): string {
 export function formatFullDate(day: number, dayTBC = false): string {
   return `${formatDayMonth(day, dayTBC)} ${new Date(day).getUTCFullYear()}`
 }
-
-// Monday of the week the day falls in
-export function weekCommencing(day: number): number {
-  const weekday = (new Date(day).getUTCDay() + 6) % 7 // Mon = 0
-  return day - weekday * DAY
-}

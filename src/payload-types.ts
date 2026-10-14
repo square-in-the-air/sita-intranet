@@ -103,7 +103,9 @@ export interface Config {
     logo: Logo;
     navigation: Navigation;
     'quick-links': QuickLink;
+    'social-links': SocialLink;
     ticker: Ticker;
+    callouts: Callout;
   };
   globalsSelect: {
     hr: HrSelect<false> | HrSelect<true>;
@@ -111,7 +113,9 @@ export interface Config {
     logo: LogoSelect<false> | LogoSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     'quick-links': QuickLinksSelect<false> | QuickLinksSelect<true>;
+    'social-links': SocialLinksSelect<false> | SocialLinksSelect<true>;
     ticker: TickerSelect<false> | TickerSelect<true>;
+    callouts: CalloutsSelect<false> | CalloutsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -161,7 +165,7 @@ export interface Event {
   dayToBeConfirmed?: boolean | null;
   organiser?: (number | null) | Person;
   /**
-   * Max 50 words.
+   * Write as much as you like. The What’s On cards only show the first 50 words.
    */
   description?: string | null;
   updatedAt: string;
@@ -178,22 +182,24 @@ export interface Person {
   lastName: string;
   name?: string | null;
   jobTitle: string;
-  department: 'activation' | 'creative' | 'design' | 'pr' | 'social' | 'video';
-  workEmail: string;
+  department:
+    'activation' | 'b2b-pr' | 'consumer-pr' | 'creative' | 'design' | 'management' | 'pr' | 'social' | 'video';
+  /**
+   * Add when known. Used to match a login to this person and for the search result link.
+   */
+  workEmail?: string | null;
   /**
    * A couple of sentences for the profile page. Written by the person themselves where possible.
    */
   shortBio?: string | null;
   /**
-   * Drives the new starter box and work anniversaries on the What’s On page.
+   * Drives the new starter box and the month’s work anniversaries on the What’s On page.
    */
   startDate?: string | null;
-  birthdayDay?: number | null;
   /**
-   * Leave blank if they’d rather it wasn’t shown on the What’s On page.
+   * Pick the year, month and day. Shows in the month’s birthdays on the What’s On page. Leave blank if they’d rather it wasn’t shown.
    */
-  birthdayMonth?:
-    ('jan' | 'feb' | 'mar' | 'apr' | 'may' | 'jun' | 'jul' | 'aug' | 'sep' | 'oct' | 'nov' | 'dec') | null;
+  birthday?: string | null;
   /**
    * e.g. “Joining the video and creative team.” Defaults to their department.
    */
@@ -240,10 +246,6 @@ export interface News {
    * Auto-generated from the title. Used in the /news URL.
    */
   slug?: string | null;
-  /**
-   * Short summary shown on news cards. Keep it to a sentence or two.
-   */
-  excerpt?: string | null;
   heroImage?: (number | null) | Media;
   content?: {
     root: {
@@ -274,17 +276,13 @@ export interface Inspo {
   id: number;
   title: string;
   /**
-   * Shown above the title on inspo cards.
+   * Shown above the title on the cards.
    */
   author?: (number | null) | Person;
   /**
    * Auto-generated from the title. Used in the /inspo-board URL.
    */
   slug?: string | null;
-  /**
-   * Short summary shown on inspo cards. Keep it to a sentence or two.
-   */
-  excerpt?: string | null;
   heroImage?: (number | null) | Media;
   content?: {
     root: {
@@ -313,26 +311,15 @@ export interface Inspo {
  */
 export interface Kudos {
   id: number;
-  /**
-   * Who the kudos is for, e.g. “Tom & Kiane”.
-   */
   title: string;
   /**
-   * Their photos (or initials) are shown on the kudos card.
-   */
-  recipients?: (number | Person)[] | null;
-  /**
-   * Who is giving the kudos.
+   * Shown above the title on the cards.
    */
   author?: (number | null) | Person;
   /**
    * Auto-generated from the title. Used in the /kudos-board URL.
    */
   slug?: string | null;
-  /**
-   * The kudos message shown on the cards. Keep it to a sentence or two.
-   */
-  excerpt?: string | null;
   heroImage?: (number | null) | Media;
   content?: {
     root: {
@@ -496,7 +483,6 @@ export interface NewsSelect<T extends boolean = true> {
   title?: T;
   author?: T;
   slug?: T;
-  excerpt?: T;
   heroImage?: T;
   content?: T;
   department?: T;
@@ -513,7 +499,6 @@ export interface InspoSelect<T extends boolean = true> {
   title?: T;
   author?: T;
   slug?: T;
-  excerpt?: T;
   heroImage?: T;
   content?: T;
   department?: T;
@@ -528,10 +513,8 @@ export interface InspoSelect<T extends boolean = true> {
  */
 export interface KudosSelect<T extends boolean = true> {
   title?: T;
-  recipients?: T;
   author?: T;
   slug?: T;
-  excerpt?: T;
   heroImage?: T;
   content?: T;
   department?: T;
@@ -596,8 +579,7 @@ export interface PeopleSelect<T extends boolean = true> {
   workEmail?: T;
   shortBio?: T;
   startDate?: T;
-  birthdayDay?: T;
-  birthdayMonth?: T;
+  birthday?: T;
   newStarterIntro?: T;
   newStarterSlide?: T;
   updatedAt?: T;
@@ -689,6 +671,18 @@ export interface Hr {
  */
 export interface Resource {
   id: number;
+  objectivesHeading?: string | null;
+  /**
+   * Optional. Shown to the right of the heading.
+   */
+  objectivesLabel?: string | null;
+  objectives?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   sections?:
     | {
         title: string;
@@ -720,7 +714,7 @@ export interface Resource {
   createdAt?: string | null;
 }
 /**
- * The logo in the site header and footer. Pick or upload a new image, then save.
+ * The logo in the site header and footer, plus a separate dark version for the admin panel. Pick or upload a new image, then save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "logo".
@@ -731,6 +725,10 @@ export interface Logo {
    * Use a light-coloured SVG or PNG with a transparent background.
    */
   image: number | Media;
+  /**
+   * Shown in the admin sidebar and dashboard, which have a light background. Use a dark-coloured SVG or PNG with a transparent background. Leave empty to use SITA_Primary_Dark.svg.
+   */
+  adminImage?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -778,6 +776,29 @@ export interface QuickLink {
   createdAt?: string | null;
 }
 /**
+ * The social icons next to the Quick links title on the homepage. Paste the full URL for each.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-links".
+ */
+export interface SocialLink {
+  id: number;
+  /**
+   * e.g. https://www.linkedin.com/company/your-company
+   */
+  linkedin?: string | null;
+  /**
+   * e.g. https://x.com/your-account
+   */
+  x?: string | null;
+  /**
+   * e.g. https://www.instagram.com/your-account
+   */
+  instagram?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The scrolling banner at the top of the homepage.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -796,6 +817,33 @@ export interface Ticker {
         id?: string | null;
       }[]
     | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The yellow boxes under What’s On on the homepage.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "callouts".
+ */
+export interface Callout {
+  id: number;
+  feedback: {
+    title: string;
+    text: string;
+    /**
+     * Where the box goes, e.g. the feedback form URL.
+     */
+    link: string;
+  };
+  itProblem: {
+    title: string;
+    text: string;
+    /**
+     * Clicking the box opens a new email to this address.
+     */
+    email: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -828,6 +876,15 @@ export interface HrSelect<T extends boolean = true> {
  * via the `definition` "resources_select".
  */
 export interface ResourcesSelect<T extends boolean = true> {
+  objectivesHeading?: T;
+  objectivesLabel?: T;
+  objectives?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
   sections?:
     | T
     | {
@@ -853,6 +910,7 @@ export interface ResourcesSelect<T extends boolean = true> {
  */
 export interface LogoSelect<T extends boolean = true> {
   image?: T;
+  adminImage?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -892,6 +950,18 @@ export interface QuickLinksSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-links_select".
+ */
+export interface SocialLinksSelect<T extends boolean = true> {
+  linkedin?: T;
+  x?: T;
+  instagram?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ticker_select".
  */
 export interface TickerSelect<T extends boolean = true> {
@@ -902,6 +972,29 @@ export interface TickerSelect<T extends boolean = true> {
         text?: T;
         link?: T;
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "callouts_select".
+ */
+export interface CalloutsSelect<T extends boolean = true> {
+  feedback?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        link?: T;
+      };
+  itProblem?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        email?: T;
       };
   updatedAt?: T;
   createdAt?: T;

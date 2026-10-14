@@ -2,7 +2,8 @@ import type { CollectionConfig } from 'payload'
 
 import { wordCap } from '../fields/wordCap'
 
-// Word caps keep the cards on the What's On page an even size
+// Word caps keep the cards on the What's On page an even size.
+// The title is capped in the CMS; the description can be any length but cards only show the first 50 words.
 export const EVENT_TITLE_WORDS = 8
 export const EVENT_DESCRIPTION_WORDS = 50
 
@@ -59,8 +60,10 @@ export const Events: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
-      validate: wordCap(EVENT_DESCRIPTION_WORDS),
-      admin: { description: `Max ${EVENT_DESCRIPTION_WORDS} words.` },
+      admin: {
+        rows: 10,
+        description: `Write as much as you like. The What’s On cards only show the first ${EVENT_DESCRIPTION_WORDS} words.`,
+      },
     },
   ],
 }

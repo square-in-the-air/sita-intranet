@@ -7,7 +7,7 @@ import { DateGroups } from '../_components/whats-on/DateGroups'
 import { EventCard } from '../_components/whats-on/EventCard'
 import { NewStarterBox } from '../_components/whats-on/NewStarterBox'
 import { formatDayMonth } from '../_lib/dates'
-import { getMonthCelebrations, getNewStarters, getUpcomingEvents } from '../_lib/whatsOn'
+import { getMonthCelebrations, getNewStarters, getPastEvents, getUpcomingEvents } from '../_lib/whatsOn'
 
 const PAGE_SIZE = 3
 
@@ -21,8 +21,9 @@ export default async function WhatsOnPage({
   const { show } = await searchParams
   const count = Math.max(PAGE_SIZE, Number(show) || PAGE_SIZE)
 
-  const [{ events, hasMore }, starters, { monthName, birthdays, anniversaries }] = await Promise.all([
+  const [{ events, hasMore }, pastEvents, starters, { monthName, birthdays, anniversaries }] = await Promise.all([
     getUpcomingEvents(count),
+    getPastEvents(),
     getNewStarters(),
     getMonthCelebrations(),
   ])
@@ -44,6 +45,17 @@ export default async function WhatsOnPage({
               </div>
             )}
             {hasMore && <ViewMore href={`/whats-on?show=${count + PAGE_SIZE}`} align="start" />}
+
+            {pastEvents.length > 0 && (
+              <div className="whats-on-page__past">
+                <SectionHeader title="Past events" />
+                <div className="whats-on-page__list">
+                  {pastEvents.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
 
           <div className="whats-on-page__aside">
@@ -75,7 +87,7 @@ export default async function WhatsOnPage({
               <DateGroups
                 variant="cream"
                 groups={anniversaries}
-                formatLabel={(g) => `w/c ${formatDayMonth(g.day)}`}
+                formatLabel={(g) => formatDayMonth(g.day)}
                 empty="No work anniversaries this month."
               />
             </section>

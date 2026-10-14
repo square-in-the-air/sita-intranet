@@ -40,7 +40,10 @@ export async function OrderedCollectionCards({ req, permissions }: WidgetServerP
   return (
     <div className="dashboard-groups">
       {ordered.map(([label, items]) => (
-        <div className="dashboard-groups__group" key={label}>
+        <div
+          className={`dashboard-groups__group dashboard-groups__group--${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+          key={label}
+        >
           <h2 className="dashboard-groups__label">{label}</h2>
           <ul className="dashboard-groups__list">
             {items.map(({ slug, type, label: title }) => (

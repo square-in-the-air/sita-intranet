@@ -4,7 +4,7 @@
   margin: 0;
   padding: 4px 27px 4px 17px;
   background: $color-ink;
-  color: $color-white;
+  color: $color-mint;
   list-style: none;
 
   &__item {
@@ -12,7 +12,7 @@
     align-items: center;
     gap: 16px;
     min-height: 44px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 2px solid rgba($color-mint, 0.8);
 
     &:last-child {
       border-bottom: 0;

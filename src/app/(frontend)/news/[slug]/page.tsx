@@ -38,8 +38,8 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
       author={author}
       date={formatArticleDate(article.publishedDate)}
       image={image}
-      lead={article.excerpt}
       backHref="/news"
+      backLabel="Back to news"
     >
       {article.content && <RichText data={article.content} />}
     </Article>

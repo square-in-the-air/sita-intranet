@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-import { SearchIcon } from '../_components/icons'
+import { ArrowIcon, SearchIcon } from '../_components/icons'
 import { askCommsHref } from '../_components/home/placeholderData'
 import { isSearchSection, search, searchSections, type SearchResult } from '../_lib/search'
 
@@ -33,6 +33,7 @@ function ResultCard({ result }: { result: SearchResult }) {
         <h2 className="search-result__title">{result.title}</h2>
         {result.summary && <p className="search-result__summary">{result.summary}</p>}
         <p className="search-result__crumbs">{result.breadcrumb.join(' › ')}</p>
+        <ArrowIcon className="search-result__arrow" />
       </a>
     </li>
   )

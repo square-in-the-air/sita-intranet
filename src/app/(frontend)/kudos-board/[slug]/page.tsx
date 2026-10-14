@@ -38,8 +38,8 @@ export default async function KudosArticlePage({ params }: { params: Promise<{ s
       author={author}
       date={formatArticleDate(article.publishedDate)}
       image={image}
-      lead={article.excerpt}
       backHref="/kudos-board"
+      backLabel="Back to kudos board"
     >
       {article.content && <RichText data={article.content} />}
     </Article>

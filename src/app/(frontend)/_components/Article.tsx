@@ -10,9 +10,9 @@ type Props = {
   // Already formatted, e.g. "23.07.25"
   date?: string | null
   image?: { url?: string | null; alt?: string | null } | null
-  // Bold intro paragraph. Mentions of "Square In The Air" are picked out in coral.
-  lead?: string | null
   backHref: string
+  // Shown on the button at the bottom, e.g. "Back to news"
+  backLabel?: string
   children?: React.ReactNode
 }
 
@@ -25,37 +25,20 @@ export const formatArticleDate = (value: string) =>
     timeZone: 'Europe/London',
   }).replace(/\//g, '.')
 
-// "Brighton SEO: 2026 takeaways" → the part up to the colon is coral
+// The first half of the title (by words) is coral, rounded up for odd counts
 function Title({ text }: { text: string }) {
-  const colon = text.indexOf(':')
-  if (colon < 1) return <>{text}</>
+  const words = text.trim().split(/\s+/)
+  const split = Math.ceil(words.length / 2)
   return (
     <>
-      <span className="article__accent">{text.slice(0, colon + 1)}</span>
-      {text.slice(colon + 1)}
+      <span className="article__accent">{words.slice(0, split).join(' ')}</span>
+      {words.length > split && ` ${words.slice(split).join(' ')}`}
     </>
   )
 }
 
-function Lead({ text }: { text: string }) {
-  const parts = text.split(/(Square In The Air(?:[’']s)?)/i)
-  return (
-    <p className="article__lead">
-      {parts.map((part, i) =>
-        i % 2 === 1 ? (
-          <span className="article__accent" key={i}>
-            {part}
-          </span>
-        ) : (
-          part
-        ),
-      )}
-    </p>
-  )
-}
-
 // Shared single-article template for News, Inspo board and Kudos board posts
-export function Article({ title, author, date, image, lead, backHref, children }: Props) {
+export function Article({ title, author, date, image, backHref, backLabel = 'Back', children }: Props) {
   return (
     <article className="article">
       <header className="article__header container">
@@ -80,13 +63,19 @@ export function Article({ title, author, date, image, lead, backHref, children }
       )}
 
       <div className="article__content container">
-        {lead && <Lead text={lead} />}
         {children && <div className="article__body">{children}</div>}
 
         <a href={askCommsHref} className="article__questions">
           <span className="article__questions-title">Any questions?</span>
           <span className="article__questions-text">Let us know, our door is always open.</span>
         </a>
+
+        <div className="article__back-bottom">
+          <Link href={backHref} className="page-hero__back">
+            {backLabel}
+            <ArrowIcon />
+          </Link>
+        </div>
       </div>
     </article>
   )

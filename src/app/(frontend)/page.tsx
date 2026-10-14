@@ -3,6 +3,8 @@ import { getPayload } from 'payload'
 import React from 'react'
 
 import config from '@/payload.config'
+import { defaultCallouts } from '@/globals/Callouts'
+import { defaultSocialLinks } from '@/globals/SocialLinks'
 import { getWhatsOnSummary } from './_lib/whatsOn'
 import { Ticker } from './_components/Ticker'
 import { CompanyObjective } from './_components/home/CompanyObjective'
@@ -17,10 +19,7 @@ import { SectionHeader } from './_components/home/SectionHeader'
 import { WhatsOn } from './_components/home/WhatsOn'
 import {
   companyObjective,
-  feedbackFormHref,
   quickLinks as placeholderQuickLinks,
-  socialLinks,
-  whatsOnItems,
 } from './_components/home/placeholderData'
 
 export default async function HomePage() {
@@ -48,6 +47,19 @@ export default async function HomePage() {
         variant: style === 'highlight' || style === 'dark' ? style : undefined,
       }))
     : placeholderQuickLinks
+
+  // Edited in Payload (Options → Call-out boxes)
+  const callouts = await payload.findGlobal({ slug: 'callouts', depth: 0 })
+  const feedback = { ...defaultCallouts.feedback, ...callouts.feedback }
+  const itProblem = { ...defaultCallouts.itProblem, ...callouts.itProblem }
+
+  // Edited in Payload (Options → Social links); any blank link falls back to the default profile
+  const socialGlobal = await payload.findGlobal({ slug: 'social-links', depth: 0 })
+  const socialLinks = {
+    linkedin: socialGlobal.linkedin || defaultSocialLinks.linkedin,
+    x: socialGlobal.x || defaultSocialLinks.x,
+    instagram: socialGlobal.instagram || defaultSocialLinks.instagram,
+  }
 
   const news = await payload.find({
     collection: 'news',
@@ -145,8 +157,13 @@ export default async function HomePage() {
 
             <section>
               <SectionHeader title={'What’s on'} linkLabel="All events" href="/whats-on" />
-              <WhatsOn items={whatsOn.length ? whatsOn : whatsOnItems} />
-              <FeedbackLink href={feedbackFormHref} />
+              <WhatsOn items={whatsOn} />
+              <FeedbackLink href={feedback.link} title={feedback.title} text={feedback.text} />
+              <FeedbackLink
+                href={`mailto:${itProblem.email}?subject=${encodeURIComponent('IT problem')}`}
+                title={itProblem.title}
+                text={itProblem.text}
+              />
             </section>
           </aside>
         </div>
