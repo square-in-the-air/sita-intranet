@@ -26,6 +26,7 @@ const bodyFont = localFont({
   display: 'swap',
 })
 
+// The favicon is src/app/icon.svg (the dark logo), which Next picks up automatically
 export const metadata = {
   description: 'The SITA intranet.',
   title: 'SITA Intranet',

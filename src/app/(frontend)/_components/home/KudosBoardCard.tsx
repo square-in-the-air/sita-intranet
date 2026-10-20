@@ -30,10 +30,10 @@ export function KudosBoardCard({ item }: { item: KudosItem }) {
   )
 
   return item.href ? (
-    <Link href={item.href} className="inspo-card inspo-card--large" aria-label={`Kudos: ${item.names}`}>
+    <Link href={item.href} className="inspo-card inspo-card--large inspo-card--kudos" aria-label={`Kudos: ${item.names}`}>
       {content}
     </Link>
   ) : (
-    <article className="inspo-card inspo-card--large">{content}</article>
+    <article className="inspo-card inspo-card--large inspo-card--kudos">{content}</article>
   )
 }

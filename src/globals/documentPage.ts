@@ -6,7 +6,7 @@ type Options = {
   label: string
   // Where the page lives on the site, e.g. '/hr'
   path: string
-  // Adds an editable row of up to three numbered objectives above the sections
+  // Adds an editable row of up to four numbered objectives above the sections
   objectives?: boolean
 }
 
@@ -41,7 +41,7 @@ export const buildDocumentPage = ({ slug, label, path, objectives }: Options): G
             label: 'Objectives',
             admin: {
               description:
-                'Up to three objectives shown side by side above the sections. They’re numbered 01, 02, 03 in the order they’re added.',
+                'Up to four objectives shown side by side above the sections. They’re numbered 01, 02, 03, 04 in the order they’re added.',
             },
             fields: [
               {
@@ -69,7 +69,7 @@ export const buildDocumentPage = ({ slug, label, path, objectives }: Options): G
                 name: 'objectives',
                 type: 'array' as const,
                 labels: { singular: 'Objective', plural: 'Objectives' },
-                maxRows: 3,
+                maxRows: 4,
                 admin: {
                   initCollapsed: true,
                   components: { RowLabel: '/globals/components/NumberRowLabel#NumberRowLabel' },
