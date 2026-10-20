@@ -52,9 +52,15 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    // One row on desktop whatever the count, so four never wrap to 3 + 1
     @include md {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
     }
+
+    &--1 { --cols: 1; }
+    &--2 { --cols: 2; }
+    &--3 { --cols: 3; }
+    &--4 { --cols: 4; }
   }
 }
 

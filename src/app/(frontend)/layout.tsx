@@ -1,10 +1,6 @@
 import React from 'react'
 import localFont from 'next/font/local'
 
-import { getPayload } from 'payload'
-
-import config from '@/payload.config'
-import { getAdminLogo } from '@/components/getAdminLogo'
 import '@/styles/main.scss'
 import { Footer } from './_components/Footer'
 import { Header } from './_components/Header'
@@ -30,16 +26,10 @@ const bodyFont = localFont({
   display: 'swap',
 })
 
-// The favicon is the dark alternative logo (Globals → Logo), which reads on light browser tabs
-export async function generateMetadata() {
-  const payload = await getPayload({ config: await config })
-  const { url } = await getAdminLogo(payload)
-
-  return {
-    description: 'The SITA intranet.',
-    title: 'SITA Intranet',
-    icons: { icon: url },
-  }
+// The favicon is src/app/icon.svg (the dark logo), which Next picks up automatically
+export const metadata = {
+  description: 'The SITA intranet.',
+  title: 'SITA Intranet',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

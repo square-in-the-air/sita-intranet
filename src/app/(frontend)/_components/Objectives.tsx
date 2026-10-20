@@ -18,7 +18,7 @@ export function Objectives({
         <h2 className="objectives__heading">{heading}</h2>
         {label && <p className="objectives__label">{label}</p>}
       </div>
-      <ol className="objectives__list">
+      <ol className={`objectives__list objectives__list--${Math.min(items.length, 4)}`}>
         {items.map((item, i) => (
           <li className="objective" key={i}>
             <span className="objective__number">{String(i + 1).padStart(2, '0')}</span>
