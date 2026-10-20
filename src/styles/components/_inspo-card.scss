@@ -55,4 +55,41 @@
   &--large {
     @include card.card-large('inspo-card');
   }
+
+  // Kudos board: every card is the same height, whatever the image or message length
+  &--kudos {
+    @include xs {
+      height: 280px;
+      min-height: 0;
+    }
+
+    @include md {
+      height: 340px;
+    }
+
+    @include lg {
+      height: 380px;
+    }
+
+    .inspo-card__image {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .inspo-card__body {
+      overflow: hidden;
+    }
+
+    // Long messages are cut off with an ellipsis instead of growing the card
+    .inspo-card__text {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+
+      @include md {
+        -webkit-line-clamp: 6;
+      }
+    }
+  }
 }
