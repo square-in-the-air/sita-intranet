@@ -154,9 +154,6 @@ export interface UserAuthOperations {
  */
 export interface Event {
   id: number;
-  /**
-   * Max 8 words.
-   */
   title: string;
   date: string;
   /**
@@ -165,7 +162,7 @@ export interface Event {
   dayToBeConfirmed?: boolean | null;
   organiser?: (number | null) | Person;
   /**
-   * Write as much as you like. The What’s On cards only show the first 50 words.
+   * Write as much as you like. The What’s On cards show all of it.
    */
   description?: string | null;
   updatedAt: string;

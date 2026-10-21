@@ -197,6 +197,17 @@
         text-decoration: underline;
         text-underline-offset: 6px;
       }
+
+      // Yellow login link at the end of the nav
+      &--login {
+        color: $color-yellow;
+        opacity: 1;
+
+        &:hover {
+          text-decoration: underline;
+          text-underline-offset: 6px;
+        }
+      }
     }
   }
 }

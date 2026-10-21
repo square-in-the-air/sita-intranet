@@ -11,9 +11,9 @@ import type { Event, Media, Person } from '@/payload-types'
 import { DAY, MONTHS, formatDayMonth, toDay, today } from './dates'
 import { departmentLabels } from './departments'
 
-// New starters show from 2 weeks before their first day until a week after
+// New starters show from 2 weeks before their first day until a month after
 const NEW_STARTER_BEFORE = 14 * DAY
-const NEW_STARTER_AFTER = 7 * DAY
+const NEW_STARTER_AFTER = 30 * DAY
 // How far ahead the homepage box looks for birthdays and anniversaries
 const SUMMARY_WINDOW = 60 * DAY
 
