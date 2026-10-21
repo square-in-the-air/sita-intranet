@@ -51,6 +51,10 @@ export function HeaderNav({ navLinks }: { navLinks: NavLink[] }) {
           </Link>
         )
       })}
+      {/* Different part of the app (Payload), so a plain link rather than next/link */}
+      <a href="/admin/login" className="header__link header__link--login">
+        Login
+      </a>
       </nav>
     </>
   )

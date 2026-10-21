@@ -115,6 +115,17 @@
 
     @include xs {
       aspect-ratio: auto;
+      // Cap the image height so a tall photo can't stretch the card
+      overflow: hidden;
+      max-height: 280px;
+    }
+
+    @include md {
+      max-height: 340px;
+    }
+
+    @include lg {
+      max-height: 380px;
     }
   }
 
