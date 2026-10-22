@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 export const defaultNavItems = [
   { label: 'News', link: '/news' },
   { label: 'Resources', link: '/resources' },
+  { label: 'Finance', link: '/finance' },
   { label: 'HR', link: '/hr' },
   { label: 'Inspo board', link: '/inspo-board' },
   { label: 'Kudos board', link: '/kudos-board' },

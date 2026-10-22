@@ -15,6 +15,7 @@ import { Inspo } from './collections/Inspo'
 import { Kudos } from './collections/Kudos'
 import { Ticker } from './globals/Ticker'
 import { Navigation } from './globals/Navigation'
+import { Finance } from './globals/Finance'
 import { HR } from './globals/HR'
 import { Resources } from './globals/Resources'
 import { Logo } from './globals/Logo'
@@ -50,7 +51,7 @@ export default buildConfig({
     },
   },
   collections: [Events, News, Inspo, Kudos, Users, Media, People],
-  globals: [HR, Resources, Logo, Navigation, QuickLinks, SocialLinks, Ticker, Callouts],
+  globals: [HR, Finance, Resources, Logo, Navigation, QuickLinks, SocialLinks, Ticker, Callouts],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -99,6 +99,7 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     hr: Hr;
+    finance: Finance;
     resources: Resource;
     logo: Logo;
     navigation: Navigation;
@@ -109,6 +110,7 @@ export interface Config {
   };
   globalsSelect: {
     hr: HrSelect<false> | HrSelect<true>;
+    finance: FinanceSelect<false> | FinanceSelect<true>;
     resources: ResourcesSelect<false> | ResourcesSelect<true>;
     logo: LogoSelect<false> | LogoSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
@@ -679,6 +681,44 @@ export interface Hr {
   createdAt?: string | null;
 }
 /**
+ * The sections and documents on the Finance page. Drag sections to reorder them, then save.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "finance".
+ */
+export interface Finance {
+  id: number;
+  sections?:
+    | {
+        title: string;
+        /**
+         * Optional. A short line shown under the section title.
+         */
+        intro?: string | null;
+        documents?:
+          | {
+              /**
+               * The name shown on the page.
+               */
+              label: string;
+              /**
+               * Upload a document, or pick one already in the media library.
+               */
+              file?: (number | null) | Media;
+              /**
+               * Optional. Use instead of a file to link to a page on the Hub (e.g. /whats-on) or a full URL.
+               */
+              link?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The sections and documents on the Resources page. Drag sections to reorder them, then save.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -867,6 +907,30 @@ export interface Callout {
  * via the `definition` "hr_select".
  */
 export interface HrSelect<T extends boolean = true> {
+  sections?:
+    | T
+    | {
+        title?: T;
+        intro?: T;
+        documents?:
+          | T
+          | {
+              label?: T;
+              file?: T;
+              link?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "finance_select".
+ */
+export interface FinanceSelect<T extends boolean = true> {
   sections?:
     | T
     | {

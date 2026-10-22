@@ -60,7 +60,7 @@ export async function search(query: string): Promise<SearchResult[]> {
     depth: 0,
   }
 
-  const [news, inspo, kudos, people, hrPanels, resourcePanels] = await Promise.all([
+  const [news, inspo, kudos, people, hrPanels, financePanels, resourcePanels] = await Promise.all([
     payload.find({ collection: 'news', ...postQuery }),
     payload.find({ collection: 'inspo', ...postQuery }),
     payload.find({ collection: 'kudos', ...postQuery }),
@@ -72,6 +72,7 @@ export async function search(query: string): Promise<SearchResult[]> {
       depth: 0,
     }),
     getPanels('hr'),
+    getPanels('finance'),
     getPanels('resources'),
   ])
 
@@ -94,11 +95,12 @@ export async function search(query: string): Promise<SearchResult[]> {
       breadcrumb: ['Hub', 'Quick links', item.label],
     }))
 
-  // Documents in the HR and Resources page boxes. Only the document name is
+  // Documents in the HR, Finance and Resources page boxes. Only the document name is
   // searched, not the box title or intro text.
   const panelResults = (
     [
       { id: 'hr', section: 'hr', name: 'HR', panels: hrPanels },
+      { id: 'finance', section: 'finance', name: 'Finance', panels: financePanels },
       { id: 'resources', section: 'company', name: 'Resources', panels: resourcePanels },
     ] as const
   ).flatMap(({ id, section, name, panels }) =>
