@@ -4,9 +4,9 @@ import config from '@/payload.config'
 import type { LinkPanel } from '../_components/LinkPanels'
 import type { Objective } from '../_components/Objectives'
 
-// Sections and documents are edited in Payload (HR and Resources → HR / Resources).
+// Sections and documents are edited in Payload (HR, Finance and Resources pages).
 // Returns null while the page has no sections so the caller can show its placeholder.
-export async function getPanels(slug: 'hr' | 'resources'): Promise<LinkPanel[] | null> {
+export async function getPanels(slug: 'hr' | 'finance' | 'resources'): Promise<LinkPanel[] | null> {
   const payload = await getPayload({ config: await config })
   const page = await payload.findGlobal({ slug, depth: 2 })
 
