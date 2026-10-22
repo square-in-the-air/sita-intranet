@@ -1,4 +1,3 @@
-import { headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 import React from 'react'
 
@@ -24,19 +23,6 @@ import {
 
 export default async function HomePage() {
   const payload = await getPayload({ config: await config })
-
-  const { user } = await payload.auth({ headers: await getHeaders() })
-  let firstName: string | null = null
-
-  if (user?.email) {
-    const { docs } = await payload.find({
-      collection: 'people',
-      where: { workEmail: { equals: user.email } },
-      limit: 1,
-      depth: 0,
-    })
-    firstName = docs[0]?.firstName ?? null
-  }
 
   // Edited in Payload (Globals → Quick links); placeholder list if it's empty
   const quickLinksGlobal = await payload.findGlobal({ slug: 'quick-links', depth: 0 })
@@ -102,7 +88,7 @@ export default async function HomePage() {
 
       <section className="welcome">
         <div className="welcome__inner container">
-          <h1 className="welcome__title">Welcome{firstName ? `, ${firstName}` : ''}</h1>
+          <h1 className="welcome__title">Welcome</h1>
           <p className="welcome__date">{today}</p>
         </div>
       </section>
