@@ -1,11 +1,13 @@
 import type { GlobalConfig } from 'payload'
 
+import { staffOrEditor } from '@/access/staff'
+
 // Scrolling orange banner at the top of the homepage
 export const Ticker: GlobalConfig = {
   slug: 'ticker',
   label: 'Ticker',
   access: {
-    read: () => true,
+    read: staffOrEditor,
   },
   admin: {
     group: 'Options',

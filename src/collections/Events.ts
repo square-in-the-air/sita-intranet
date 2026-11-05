@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { staffOrEditor } from '@/access/staff'
+
 export const Events: CollectionConfig = {
   slug: 'events',
   labels: { singular: 'Event', plural: 'What’s On' },
@@ -10,7 +12,7 @@ export const Events: CollectionConfig = {
     description: 'Shown on the What’s On page and in the What’s On box on the homepage.',
   },
   access: {
-    read: () => true,
+    read: staffOrEditor,
   },
   defaultSort: 'date',
   fields: [
