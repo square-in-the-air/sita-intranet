@@ -1,6 +1,8 @@
 import type { GlobalConfig } from 'payload'
 import { revalidatePath } from 'next/cache'
 
+import { staffOrEditor } from '@/access/staff'
+
 type Options = {
   slug: string
   label: string
@@ -15,7 +17,7 @@ export const buildDocumentPage = ({ slug, label, path, objectives }: Options): G
   slug,
   label,
   access: {
-    read: () => true,
+    read: staffOrEditor,
   },
   admin: {
     group: 'Pages',

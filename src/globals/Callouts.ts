@@ -1,6 +1,8 @@
 import type { GlobalConfig } from 'payload'
 import { revalidatePath } from 'next/cache'
 
+import { staffOrEditor } from '@/access/staff'
+
 // Defaults, used to pre-fill the admin and as the front-end fallback
 export const defaultCallouts = {
   feedback: {
@@ -20,7 +22,7 @@ export const Callouts: GlobalConfig = {
   slug: 'callouts',
   label: 'Call-out boxes',
   access: {
-    read: () => true,
+    read: staffOrEditor,
   },
   admin: {
     group: 'Options',

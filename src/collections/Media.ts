@@ -1,12 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
+import { staffEditorOrLogo } from '@/access/staff'
+
 export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
     group: 'Options',
   },
   access: {
-    read: () => true,
+    read: staffEditorOrLogo,
   },
   fields: [
     {
