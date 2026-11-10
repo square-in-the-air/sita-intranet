@@ -1,6 +1,8 @@
 import type { GlobalConfig } from 'payload'
 import { revalidatePath } from 'next/cache'
 
+import { staffOrEditor } from '@/access/staff'
+
 // Default links, used to pre-fill the admin and as the front-end fallback
 export const defaultQuickLinks = [
   { label: 'Google', link: 'https://www.google.com', style: 'highlight' },
@@ -18,7 +20,7 @@ export const QuickLinks: GlobalConfig = {
   slug: 'quick-links',
   label: 'Quick links',
   access: {
-    read: () => true,
+    read: staffOrEditor,
   },
   admin: {
     group: 'Options',

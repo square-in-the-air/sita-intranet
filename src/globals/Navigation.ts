@@ -1,6 +1,8 @@
 import type { GlobalConfig } from 'payload'
 import { revalidatePath } from 'next/cache'
 
+import { staffOrEditor } from '@/access/staff'
+
 // Default menu, used to pre-fill the admin and as the front-end fallback
 export const defaultNavItems = [
   { label: 'News', link: '/news' },
@@ -17,7 +19,7 @@ export const Navigation: GlobalConfig = {
   slug: 'navigation',
   label: 'Navigation items',
   access: {
-    read: () => true,
+    read: staffOrEditor,
   },
   admin: {
     group: 'Options',

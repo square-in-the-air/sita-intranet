@@ -1,6 +1,8 @@
 import type { GlobalConfig } from 'payload'
 import { revalidatePath } from 'next/cache'
 
+import { staffOrEditor } from '@/access/staff'
+
 // Square in the Air's profiles (from the footer of squareintheair.com). Pre-fill the
 // admin and are used on the homepage until a link is saved.
 export const defaultSocialLinks = {
@@ -14,7 +16,7 @@ export const SocialLinks: GlobalConfig = {
   slug: 'social-links',
   label: 'Social links',
   access: {
-    read: () => true,
+    read: staffOrEditor,
   },
   admin: {
     group: 'Options',

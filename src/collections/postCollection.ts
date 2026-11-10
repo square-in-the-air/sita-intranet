@@ -1,5 +1,7 @@
 import type { CollectionConfig, Field } from 'payload'
 
+import { isStaffOrEditor } from '@/access/staff'
+
 const formatSlug = (value: string) =>
   value
     .toLowerCase()
@@ -45,9 +47,10 @@ export const buildPostCollection = ({
   },
   access: {
     // Logged-in editors can read drafts in the admin panel.
-    // Everyone else only ever sees published posts.
-    read: ({ req }) => {
-      if (req.user) return true
+    // Staff only ever see published posts, and signed out visitors see nothing.
+    read: async (args) => {
+      if (args.req.user) return true
+      if (!(await isStaffOrEditor(args))) return false
       return {
         _status: {
           equals: 'published',
